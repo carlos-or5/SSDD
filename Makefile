@@ -4,7 +4,10 @@ SUBDIRS = frontend backend backend-grpc backend-rest
 all: $(SUBDIRS)
 
 run-devel:
-	docker-compose -f docker-compose-devel.yml up
+	docker-compose -f docker-compose-devel.yml up -d
+
+clear-devel:
+	docker-compose -f docker-compose-devel.yml down --rmi all
 
 containers: $(SUBDIRS)
 	for i in $(SUBDIRS); do \
@@ -28,4 +31,4 @@ clean:
 		$(MAKE) -C $$i $@; \
 	done
 
-.PHONY: all run-devel containers frontend backend backend-grpc backend-rest clean
+.PHONY: all run-devel clear-devel containers frontend backend backend-grpc backend-rest clean

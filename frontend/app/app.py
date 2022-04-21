@@ -7,6 +7,10 @@ from models import users, User
 # Login
 from forms import LoginForm
 
+import os
+import json
+import requests
+
 app = Flask(__name__, static_url_path='')
 login_manager = LoginManager()
 login_manager.init_app(app) # Para mantener la sesión
@@ -32,10 +36,17 @@ def login():
         error = None
         form = LoginForm(request.form)
         if request.method == "POST" and  form.validate():
-            if form.email.data != 'admin@um.es' or form.password.data != 'admin':
+            headers = {"Content-Type": "application/json"}
+            data = {"email":f"{form.email.data}", "password":f"{form.password.data}"}
+            data = json.dumps(data)
+            r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/checkLogin", headers=headers, data=data)
+            if r.status_code != 200:
                 error = 'Invalid Credentials. Please try again.'
+            #if form.email.data != 'admin@um.es' or form.password.data != 'admin':
+            #    error = 'Invalid Credentials. Please try again.'
             else:
-                user = User(1, 'admin', form.email.data.encode('utf-8'),
+                response_json = json.loads(r.text)
+                user = User(1, response_json.get("name"), form.email.data.encode('utf-8'),
                             form.password.data.encode('utf-8'))
                 users.append(user)
                 login_user(user, remember=form.remember_me.data)
