@@ -6,3 +6,9 @@ class LoginForm(FlaskForm):
     email = StringField('email', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
     remember_me = BooleanField('remember_me')
+
+# TODO!!!
+class RegisterForm(FlaskForm):
+    email = StringField('email', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+    remember_me = BooleanField('remember_me')
