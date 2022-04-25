@@ -9,4 +9,7 @@ public interface IUserDAO
     public Optional<User> getUserById(String id);
 
     public Optional<User> getUserByEmail(String id);
+
+    public Optional<User> register(String email, String name, String pass);
+
 }

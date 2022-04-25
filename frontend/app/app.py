@@ -35,7 +35,7 @@ def login():
     else:
         error = None
         form = LoginForm(request.form)
-        if request.method == "POST" and  form.validate():
+        if request.method == "POST" and form.validate():
             headers = {"Content-Type": "application/json"}
             data = {"email":f"{form.email.data}", "password":f"{form.password.data}"}
             data = json.dumps(data)
@@ -62,7 +62,7 @@ def register():
     else:
         error = None
         form = LoginForm(request.form)
-        if request.method == "POST" and  form.validate():
+        if request.method == "POST":
             headers = {"Content-Type": "application/json"}
             data = {"email":f"{form.email.data}", "password":f"{form.password.data}"}
             data = json.dumps(data)
@@ -79,8 +79,7 @@ def register():
                 login_user(user, remember=form.remember_me.data)
                 return redirect(url_for('index'))
 
-        return render_template('register.html', form=form,  error=error)        
-
+        return render_template('signup.html', form=form,  error=error)
 
 @app.route('/profile')
 @login_required

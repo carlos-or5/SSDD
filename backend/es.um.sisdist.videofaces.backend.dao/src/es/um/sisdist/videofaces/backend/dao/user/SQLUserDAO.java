@@ -69,6 +69,28 @@ public class SQLUserDAO implements IUserDAO
 		return Optional.empty();
 	}
 
+	public Optional<User> register(String email, String name, String pass)
+    {
+        PreparedStatement stm;
+        try
+        {
+            stm = conn.prepareStatement("INSERT INTO users (id, email, password_hash, name, TOKEN, visits) VALUES (?,?,?,?,?,?)");
+            stm.setString(1, User.md5pass(email));
+            stm.setString(2, email);
+            stm.setString(3, User.md5pass(pass));
+            stm.setString(4, name);
+            stm.setString(5, "TOKEN");
+            stm.setInt(6, 0);
+            ResultSet result = stm.executeQuery();
+            if (result.next())
+                return createUser(result);
+        } catch (SQLException e)
+        {
+            // Fallthrough
+        }
+        return Optional.empty();
+    }
+
 	private Optional<User> createUser(ResultSet result)
 	{
 		try
