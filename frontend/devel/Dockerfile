@@ -1,20 +1,19 @@
-FROM ubuntu:20.04
+FROM python:3.7-slim
+
+RUN mkdir -p /videofaces-frontend
 
 MAINTAINER Your Name "youremail@domain.tld"
 
-RUN apt-get update -y && \
-    apt-get install -y python3-pip python3-dev vim-tiny
-
 # We copy just the requirements.txt first to leverage Docker cache
-COPY ./requirements.txt /flask-example/requirements.txt
+COPY requirements.txt /videofaces-frontend
 
-WORKDIR /flask-example
+WORKDIR /videofaces-frontend
 
-RUN pip install -r requirements.txt
-
-COPY . /flask-example
+RUN pip3 install -r requirements.txt
 
 ENV FLASK_APP="app/app.py"
 ENV FLASK_ENV="development"
+
+EXPOSE 5000
 
 CMD [ "flask", "run", "--host=0.0.0.0" ]
