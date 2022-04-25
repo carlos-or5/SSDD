@@ -95,8 +95,8 @@ public class AppLogicImpl
     public Optional<User> register(String email, String name, String pass)
     {
 
-        //if (email.isEmpty() || name.isEmpty() || pass.isEmpty())
-        //    return Optional.empty();
+        if (email.isEmpty() || name.isEmpty() || pass.isEmpty())
+            return Optional.empty();
 
         Optional<User> u = dao.getUserByEmail(email);
 
