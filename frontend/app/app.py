@@ -75,7 +75,7 @@ def register():
                 user = User(response_json.get("id"), response_json.get("name"), form.email.data.encode('utf-8'),
                             form.password.data.encode('utf-8'))
                 users.append(user)
-                login_user(user, remember=form.remember_me.data)
+                login_user(user)
                 return redirect(url_for('index'))
 
         return render_template('signup.html', form=form,  error=error)
@@ -94,7 +94,7 @@ def logout():
 @login_manager.user_loader
 def load_user(user_id):
     for user in users:
-        if user.id == int(user_id):
+        if user.id == user_id:
             return user
     return None
 

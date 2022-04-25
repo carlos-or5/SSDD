@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Sign Up</h3>
-    <div class="box">
+<div class="form-signin">
+    <h3 class="h3 mb-3 fw-normal">Sign Up</h3>
+    <div class="form-floating">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="notification is-danger">
@@ -18,25 +18,25 @@
         {% endwith %}
 
         <form method="POST" action="/register">
-            <div class="field">
+            <div class="form-floating">
                 <div class="control">
-                    <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
+                    <input id="floatingInput" class="form-control" type="email" name="email" placeholder="Email" autofocus="">
                 </div>
             </div>
 
-            <div class="field">
+            <div class="form-floating">
                 <div class="control">
-                    <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
+                    <input id="floatingInput" class="form-control" type="text" name="name" placeholder="Name" autofocus="">
                 </div>
             </div>
 
-            <div class="field">
+            <div class="form-floating">
                 <div class="control">
-                    <input class="input is-large" type="password" name="password" placeholder="Password">
+                    <input id="floatingPassword" class="form-control" type="password" name="password" placeholder="Password">
                 </div>
             </div>
 
-            <button class="button is-block is-info is-large is-fullwidth" type="submit">Sign Up</button>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign Up</button>
         </form>
         {% if error %}
             <p class="error"><strong>Error:</strong> {{ error }}
