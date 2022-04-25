@@ -91,4 +91,26 @@ public class AppLogicImpl
 
         return Optional.empty();
     }
+
+    public Optional<User> register(String email, String name, String pass)
+    {
+
+        Optional<User> u = dao.getUserByEmail(email);
+
+
+        // Si el email a registrar esta creado, entonces devolver error
+        if (u.isPresent())
+        {
+            //String hashed_pass = User.md5pass(pass);
+            //if (0 == hashed_pass.compareTo(u.get().getPassword_hash()))
+                //return u;
+            return Optional.empty();
+        }
+
+        // Si no hay email registrado en la base de datos, entonces registramos
+
+        u = dao.register(email, name, pass);
+
+        return u;
+    }
 }
