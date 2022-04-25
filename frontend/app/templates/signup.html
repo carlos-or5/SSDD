@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block custom_style %}
+ <!-- Custom styles for this template -->
+    <link href="/static/signin.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="column is-4 is-offset-4">
     <h3 class="title">Sign Up</h3>
@@ -12,7 +17,7 @@
             {% endif %}
         {% endwith %}
 
-        <form method="POST" action="/signup">
+        <form method="POST" action="/register">
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
@@ -31,8 +36,11 @@
                 </div>
             </div>
 
-            <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+            <button class="button is-block is-info is-large is-fullwidth" type="submit">Sign Up</button>
         </form>
+        {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

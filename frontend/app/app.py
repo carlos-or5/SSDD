@@ -5,7 +5,7 @@ from flask_login import LoginManager, login_manager, current_user, login_user, l
 from models import users, User
 
 # Login
-from forms import LoginForm
+from forms import LoginForm, RegisterForm
 
 import os
 import json
@@ -46,7 +46,7 @@ def login():
             #    error = 'Invalid Credentials. Please try again.'
             else:
                 response_json = json.loads(r.text)
-                user = User(1, response_json.get("name"), form.email.data.encode('utf-8'),
+                user = User(response_json.get("id"), response_json.get("name"), form.email.data.encode('utf-8'),
                             form.password.data.encode('utf-8'))
                 users.append(user)
                 login_user(user, remember=form.remember_me.data)
@@ -54,26 +54,25 @@ def login():
 
         return render_template('login.html', form=form,  error=error)
 
-# TODO !!!!!
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     else:
         error = None
-        form = LoginForm(request.form)
+        form = RegisterForm(request.form)
         if request.method == "POST":
             headers = {"Content-Type": "application/json"}
-            data = {"email":f"{form.email.data}", "password":f"{form.password.data}"}
+            data = {"email":f"{form.email.data}", "name":f"{form.name.data}", "password":f"{form.password.data}"}
             data = json.dumps(data)
-            r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/checkLogin", headers=headers, data=data)
+            r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/register", headers=headers, data=data)
             if r.status_code != 200:
-                error = 'Invalid Credentials. Please try again.'
+                error = 'Email already registered.'
             #if form.email.data != 'admin@um.es' or form.password.data != 'admin':
             #    error = 'Invalid Credentials. Please try again.'
             else:
                 response_json = json.loads(r.text)
-                user = User(1, response_json.get("name"), form.email.data.encode('utf-8'),
+                user = User(response_json.get("id"), response_json.get("name"), form.email.data.encode('utf-8'),
                             form.password.data.encode('utf-8'))
                 users.append(user)
                 login_user(user, remember=form.remember_me.data)

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users(
 CREATE INDEX user_email_idx ON users (email);
 
 -- CUIDADO!! AÑADO UN USUARIO PARA PROBAR, PASSWORD: "admin"
-INSERT INTO users VALUES ("0", "pgj-cor@um.es", "21232f297a57a5a743894a0e4a801fc3", "PGJ & COR", "TOKEN", 0);
+-- INSERT INTO users VALUES ("0", "pgj-cor@um.es", "21232f297a57a5a743894a0e4a801fc3", "PGJ & COR", "TOKEN", 0);
 
 -- Vídeos
 CREATE TABLE IF NOT EXISTS videos(

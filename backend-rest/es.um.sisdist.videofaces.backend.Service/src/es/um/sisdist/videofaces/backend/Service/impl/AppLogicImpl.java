@@ -94,7 +94,6 @@ public class AppLogicImpl
 
     public Optional<User> register(String email, String name, String pass)
     {
-
         Optional<User> u = dao.getUserByEmail(email);
 
 
@@ -103,7 +102,7 @@ public class AppLogicImpl
         {
             //String hashed_pass = User.md5pass(pass);
             //if (0 == hashed_pass.compareTo(u.get().getPassword_hash()))
-                //return u;
+            //return u;
             return Optional.empty();
         }
 

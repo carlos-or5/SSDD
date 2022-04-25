@@ -74,16 +74,16 @@ public class SQLUserDAO implements IUserDAO
         PreparedStatement stm;
         try
         {
-            stm = conn.prepareStatement("INSERT INTO users (id, email, password_hash, name, TOKEN, visits) VALUES (?,?,?,?,?,?)");
+            stm = conn.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?)");
             stm.setString(1, User.md5pass(email));
             stm.setString(2, email);
             stm.setString(3, User.md5pass(pass));
             stm.setString(4, name);
             stm.setString(5, "TOKEN");
             stm.setInt(6, 0);
-            ResultSet result = stm.executeQuery();
-            if (result.next())
-                return createUser(result);
+            int row = stm.executeUpdate();
+            if (row == 1)
+                return this.getUserByEmail(email);
         } catch (SQLException e)
         {
             // Fallthrough
