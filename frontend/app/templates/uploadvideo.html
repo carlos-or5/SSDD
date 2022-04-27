@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method ="POST" enctype =" multipart/form-data">
+    <h1>Choose Video to Upload</h1>
+    <label for="file">Vídeo: </label>
+    <input type="file" name="file" />
+    <button type="submit">Submit</ button>
+</form>
+{% endblock %}

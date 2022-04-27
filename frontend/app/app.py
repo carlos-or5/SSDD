@@ -85,6 +85,11 @@ def register():
 def profile():
     return render_template('profile.html')
 
+@app.route('/uploadvideo')
+@login_required
+def uploadvideo():
+    return render_template('uploadvideo.html')
+
 @app.route('/logout')
 @login_required
 def logout():
