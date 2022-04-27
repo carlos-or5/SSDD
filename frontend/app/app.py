@@ -5,7 +5,7 @@ from flask_login import LoginManager, login_manager, current_user, login_user, l
 from models import users, User
 
 # Login
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, SendVideoForm
 
 import os
 import json
@@ -85,10 +85,19 @@ def register():
 def profile():
     return render_template('profile.html')
 
-@app.route('/uploadvideo')
+@app.route("/uploadvideo", methods=['GET','POST'])
 @login_required
 def uploadvideo():
-    return render_template('uploadvideo.html')
+    if request.method == 'POST':
+
+        f = request.files['file']
+        files = {'file':(f.filename, f)}
+
+        data = {"email":f"{form.email.data}", "name":f"{form.name.data}", "password":f"{form.password.data}"}
+        data = json.dumps(data)
+        r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/uploadVideo", files=files)
+    else:
+        return render_template('uploadvideo.html')
 
 @app.route('/logout')
 @login_required
