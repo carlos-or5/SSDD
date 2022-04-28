@@ -88,14 +88,14 @@ def profile():
 @app.route("/uploadvideo", methods=['GET','POST'])
 @login_required
 def uploadvideo():
+    respuesta = None
     if request.method == 'POST':
-
         f = request.files['file']
         files = {'file':(f.filename, f)}
-
-        data = {"email":f"{form.email.data}", "name":f"{form.name.data}", "password":f"{form.password.data}"}
-        data = json.dumps(data)
         r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/uploadVideo", files=files)
+        respuesta = r.text
+        return render_template('uploadvideo.html', respuesta = respuesta)
+
     else:
         return render_template('uploadvideo.html')
 

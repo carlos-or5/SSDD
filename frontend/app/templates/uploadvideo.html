@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method ="POST" enctype =" multipart/form-data">
+<form method ="POST" enctype = "multipart/form-data">
     <h1>Choose Video to Upload</h1>
     <label for="file">Vídeo: </label>
-    <input type="file" name="file" />
-    <button type="submit">Submit</ button>
+    <input type="file" name="file"/>
+    <button type="submit">Submit</button>
 </form>
+{% if respuesta %}
+    <p class="error"><strong>Fichero subido con exito:</strong> {{ respuesta }}
+{% endif %}
 {% endblock %}
