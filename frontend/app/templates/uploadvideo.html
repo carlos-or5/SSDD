@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 
+{% block custom_style %}
+ <!-- Custom styles for this template -->
+    <link href="/static/signin.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <form method ="POST" enctype = "multipart/form-data">
     <h1>Choose Video to Upload</h1>
     <label for="file">Vídeo: </label>
-    <input type="file" name="file"/>
-    <button type="submit">Submit</button>
+    <input class="form-control" type="file" name="file"/>
+    <button class="w-100 btn btn-lg btn-primary" type="submit" type="submit">Submit</button>
 </form>
 {% if respuesta %}
     <p class="error"><strong>Fichero subido con exito:</strong> {{ respuesta }}
