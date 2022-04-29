@@ -47,8 +47,19 @@ public class SQLUserDAO implements IUserDAO
 	@Override
 	public Optional<User> getUserById(String id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement stm;
+		try
+		{
+			stm = conn.prepareStatement("SELECT * from users WHERE id = ?");
+			stm.setString(1, id);
+			ResultSet result = stm.executeQuery();
+			if (result.next())
+				return createUser(result);
+		} catch (SQLException e)
+		{
+			// Fallthrough
+		}
+		return Optional.empty();
 	}
 
 	@Override
