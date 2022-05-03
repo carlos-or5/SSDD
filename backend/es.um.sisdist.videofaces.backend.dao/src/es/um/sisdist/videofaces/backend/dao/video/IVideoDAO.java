@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Optional;
 
 import es.um.sisdist.videofaces.backend.dao.models.Video;
+import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
 
 public interface IVideoDAO
 {

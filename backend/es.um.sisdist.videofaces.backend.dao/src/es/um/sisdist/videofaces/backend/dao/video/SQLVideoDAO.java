@@ -1,19 +1,21 @@
 package es.um.sisdist.videofaces.backend.dao.video;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.Date;
 
+import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
-import es.um.sisdist.videofaces.backend.dao.user.SQLUserDAO;
-import es.um.sisdist.videofaces.backend.dao.models.User;
 
 public class SQLVideoDAO implements IVideoDAO {
 
@@ -109,10 +111,9 @@ public class SQLVideoDAO implements IVideoDAO {
         try
         {
             stm = conn.prepareStatement("INSERT INTO videos VALUES (?,?,?,?,?,?)");
-            User u = getUserById(userid);
-            stm.setString(1, User.md5pass(filename+)u.getName());
+            stm.setString(1, User.md5pass(filename+userid));
             stm.setString(2, userid);
-            stm.setString(3, pstatus.ordinal());
+            stm.setInt(3, pstatus.ordinal());
             stm.setDate(4, Date.valueOf(date));
             stm.setString(5, filename);
 
@@ -122,7 +123,7 @@ public class SQLVideoDAO implements IVideoDAO {
             int row = stm.executeUpdate();
             if (row == 1)
                 return this.getVideoById(id);
-        } catch (SQLException e)
+        } catch (SQLException | FileNotFoundException e)
         {
             // Fallthrough
         }

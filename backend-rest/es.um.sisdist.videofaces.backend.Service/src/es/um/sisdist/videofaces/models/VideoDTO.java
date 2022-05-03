@@ -30,7 +30,7 @@ public class VideoDTO {
 	/**
 	 * @return the process status
 	 */
-    public String getPstatus()
+    public PROCESS_STATUS getPstatus()
 	{
 		return pstatus;
 	}
@@ -70,7 +70,7 @@ public class VideoDTO {
 	/**
 	 * @param status set the process status
 	 */
-    public String setPstatus(PROCESS_STATUS pstatus)
+    public void setPstatus(PROCESS_STATUS pstatus)
 	{
 		this.pstatus = pstatus;
 	}
@@ -78,7 +78,7 @@ public class VideoDTO {
 	/**
 	 * @param date set the date
 	 */
-    public String setDate(String date)
+    public void setDate(String date)
 	{
 		this.date = date;
 	}
@@ -86,7 +86,7 @@ public class VideoDTO {
 	/**
 	 * @param filename set the filename
 	 */
-    public String setFilename(String filename)
+    public void setFilename(String filename)
 	{
 		this.filename = filename;
 	}
