@@ -1,4 +1,4 @@
-name: Makefile CI
+name: Make & Docker-Compose CI
 
 on:
   push:
@@ -16,4 +16,7 @@ jobs:
     
     - name: Run make
       run: make
+
+    - name: Build docker-compose
+      run: make run-devel
       
