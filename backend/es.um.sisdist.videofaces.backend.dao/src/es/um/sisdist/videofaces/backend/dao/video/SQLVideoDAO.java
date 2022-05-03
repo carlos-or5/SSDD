@@ -117,7 +117,7 @@ public class SQLVideoDAO implements IVideoDAO {
             stm.setDate(4, Date.valueOf(date));
             stm.setString(5, filename);
 
-            File file = new File(filename);
+            File file = new File("/tmp/output");
 			FileInputStream inputStream = new FileInputStream(file);
             stm.setBlob(6, inputStream);
             int row = stm.executeUpdate();
