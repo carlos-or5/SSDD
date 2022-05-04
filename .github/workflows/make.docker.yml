@@ -21,8 +21,8 @@ jobs:
       run: make run-devel
 
     - name: Send mail
-        uses: dawidd6/action-send-mail@v3
-        with:
+      uses: dawidd6/action-send-mail@v3
+      with:
           # Required mail server address:
           server_address: smtp.um.es
           # Required mail server port:
