@@ -30,11 +30,36 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     -
-      name: Build and push
+      name: Build and push videofaces
       uses: docker/build-push-action@v3
       with:
+        context: ./videofaces-mysql
         push: true
         tags: peterg11/ssdd:latest
+
+    -
+      name: Build and push frontend
+      uses: docker/build-push-action@v3
+      with:
+        context: ./frontend
+        push: true
+        tags: peterg11/ssdd:latest
+
+    -
+      name: Build and push backend-rest
+      uses: docker/build-push-action@v3
+      with:
+        context: ./backend-rest/es.um.sisdist.videofaces.backend.Service
+        push: true
+        tags: peterg11/ssdd:latest
+
+    -
+      name: Build and push backend-grpc
+      uses: docker/build-push-action@v3
+      with:
+        context: ./backend-grpc/es.um.sisdist.videofaces.backend.grpc.GrpcServiceImpl/
+        push: true
+        tags: peterg11/ssdd:latest    
 
     - name: Send mail
       uses: dawidd6/action-send-mail@v3
