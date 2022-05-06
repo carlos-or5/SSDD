@@ -12,4 +12,5 @@ public interface IUserDAO
 
     public Optional<User> register(String email, String name, String pass);
 
+    public void incrementsVisits(String email);
 }

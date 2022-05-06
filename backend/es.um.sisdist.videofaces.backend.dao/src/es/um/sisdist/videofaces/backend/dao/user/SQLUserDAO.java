@@ -102,6 +102,18 @@ public class SQLUserDAO implements IUserDAO
         return Optional.empty();
     }
 
+	public void incrementsVisits(String email){
+		PreparedStatement stm;
+        try{
+			stm = conn.prepareStatement("UPDATE users SET visits = visits+1 WHERE email = ?");
+			stm.setString(1, email);
+			stm.executeUpdate();
+		} catch (SQLException e)
+		{
+			// Fallthrough
+		}
+	}
+
 	private Optional<User> createUser(ResultSet result)
 	{
 		try
