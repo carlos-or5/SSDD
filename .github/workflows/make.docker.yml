@@ -1,4 +1,4 @@
-name: Make & Docker-Compose CI
+name: Make & Docker-Compose & Push Docker Images & Send Email CI
 
 on:
   push:
