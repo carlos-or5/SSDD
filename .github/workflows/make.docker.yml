@@ -35,7 +35,7 @@ jobs:
       with:
         context: ./videofaces-mysql
         push: true
-        tags: peterg11/ssdd:latest
+        tags: peterg11/ssdd:videofaces
 
     -
       name: Build and push frontend
@@ -43,7 +43,7 @@ jobs:
       with:
         context: ./frontend
         push: true
-        tags: peterg11/ssdd:latest
+        tags: peterg11/ssdd:frontend
 
     -
       name: Build and push backend-rest
@@ -51,7 +51,7 @@ jobs:
       with:
         context: ./backend-rest/es.um.sisdist.videofaces.backend.Service
         push: true
-        tags: peterg11/ssdd:latest
+        tags: peterg11/ssdd:backend-rest
 
     -
       name: Build and push backend-grpc
@@ -59,7 +59,7 @@ jobs:
       with:
         context: ./backend-grpc/es.um.sisdist.videofaces.backend.grpc.GrpcServiceImpl/
         push: true
-        tags: peterg11/ssdd:latest    
+        tags: peterg11/ssdd:backend-grpc    
 
     - name: Send mail
       uses: dawidd6/action-send-mail@v3
