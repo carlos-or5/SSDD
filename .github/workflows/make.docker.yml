@@ -34,7 +34,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: user/app:latest
+        tags: peterg11/ssdd:latest
 
     - name: Send mail
       uses: dawidd6/action-send-mail@v3
