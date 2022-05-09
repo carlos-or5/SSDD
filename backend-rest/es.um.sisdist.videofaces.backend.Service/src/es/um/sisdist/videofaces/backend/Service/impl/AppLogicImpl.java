@@ -125,14 +125,14 @@ public class AppLogicImpl
 
         return u;
     }
-    public void storeVideo(String username){
+    public void storeVideo(String username, String filename){
 
         Optional<User> u = dao.getUserByName(username);
         if (u.isPresent()){
             User usuario = u.get();
             String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
-            daoV.storeVideo(usuario.getId(), Video.PROCESS_STATUS.PROCESSING, date, "/tmp/output");
+            daoV.storeVideo(usuario.getId(), Video.PROCESS_STATUS.PROCESSING, date, filename);
         }
     }
 }

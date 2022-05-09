@@ -95,6 +95,8 @@ def uploadvideo():
         username = current_user.name
         r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/"+username+"/uploadVideo", files=files)
         respuesta = r.text
+        if r.status_code != 200:
+                respuesta = 'No dejar el video en blanco. Inserta un video'
         return render_template('uploadvideo.html', respuesta = respuesta)
 
     else:

@@ -137,7 +137,7 @@ public class SQLVideoDAO implements IVideoDAO {
         // String id, String userid, PROCESS_STATUS pstatus, String date, String filename
 		try
 		{
-            if(result.getInt(5) == 1){
+            if(result.getInt(3) == 1){
                 return Optional.of(new Video(result.getString(1), // id
 					result.getString(2), // userid
                     Video.PROCESS_STATUS.PROCESSED,  // status

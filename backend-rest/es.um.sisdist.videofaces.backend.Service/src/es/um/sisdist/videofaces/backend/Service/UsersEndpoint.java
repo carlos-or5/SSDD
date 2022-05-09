@@ -14,6 +14,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -45,13 +46,17 @@ public class UsersEndpoint
             @FormDataParam("file") FormDataContentDisposition fileMetaData, @PathParam("username") String username) throws Exception
     {
 	// El fichero que se recibe se copia en /tmp/output
+        if (fileMetaData.getFileName().isEmpty()){
+            return Response.status(Status.FORBIDDEN).build();
+        }
+
         File targetFile = new File("/tmp/output");
 
         java.nio.file.Files.copy(fileInputStream, targetFile.toPath(),
 			StandardCopyOption.REPLACE_EXISTING);
 
         fileInputStream.close();
-        impl.storeVideo(username);
+        impl.storeVideo(username, fileMetaData.getFileName());
         return Response.ok(fileMetaData.getFileName()).build();
     }
 
