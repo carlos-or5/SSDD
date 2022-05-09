@@ -42,7 +42,7 @@ public class UsersEndpoint
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadVideo(@FormDataParam("file") InputStream fileInputStream,
-            @FormDataParam("file") FormDataContentDisposition fileMetaData) throws Exception
+            @FormDataParam("file") FormDataContentDisposition fileMetaData, @PathParam("username") String username) throws Exception
     {
 	// El fichero que se recibe se copia en /tmp/output
         File targetFile = new File("/tmp/output");
@@ -51,6 +51,7 @@ public class UsersEndpoint
 			StandardCopyOption.REPLACE_EXISTING);
 
         fileInputStream.close();
+        impl.storeVideo(username);
         return Response.ok(fileMetaData.getFileName()).build();
     }
 

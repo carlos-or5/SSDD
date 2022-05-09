@@ -10,6 +10,8 @@ public interface IUserDAO
 
     public Optional<User> getUserByEmail(String id);
 
+    public Optional<User> getUserByName(String username);
+
     public Optional<User> register(String email, String name, String pass);
 
     public void incrementsVisits(String email);

@@ -80,6 +80,24 @@ public class SQLUserDAO implements IUserDAO
 		return Optional.empty();
 	}
 
+	@Override
+	public Optional<User> getUserByName(String username)
+	{
+		PreparedStatement stm;
+		try
+		{
+			stm = conn.prepareStatement("SELECT * from users WHERE name = ?");
+			stm.setString(1, username);
+			ResultSet result = stm.executeQuery();
+			if (result.next())
+				return createUser(result);
+		} catch (SQLException e)
+		{
+			// Fallthrough
+		}
+		return Optional.empty();
+	}
+
 	public Optional<User> register(String email, String name, String pass)
     {
         PreparedStatement stm;

@@ -3,13 +3,17 @@
  */
 package es.um.sisdist.videofaces.backend.Service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import java.util.logging.Logger;
 
 import es.um.sisdist.videofaces.backend.dao.DAOFactoryImpl;
 import es.um.sisdist.videofaces.backend.dao.IDAOFactory;
 import es.um.sisdist.videofaces.backend.dao.models.User;
+import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.backend.dao.user.IUserDAO;
+import es.um.sisdist.videofaces.backend.dao.video.IVideoDAO;
 import es.um.sisdist.videofaces.backend.grpc.GrpcServiceGrpc;
 import es.um.sisdist.videofaces.backend.grpc.VideoAvailability;
 import es.um.sisdist.videofaces.backend.grpc.VideoSpec;
@@ -24,6 +28,7 @@ public class AppLogicImpl
 {
     IDAOFactory daoFactory;
     IUserDAO dao;
+    IVideoDAO daoV;
 
     private static final Logger logger = Logger.getLogger(AppLogicImpl.class.getName());
 
@@ -37,6 +42,7 @@ public class AppLogicImpl
     {
         daoFactory = new DAOFactoryImpl();
         dao = daoFactory.createSQLUserDAO();
+        daoV = daoFactory.createSQLVideoDAO();
 
         Optional<String> grpcServerName = Optional.ofNullable(System.getenv("GRPC_SERVER"));
         Optional<String> grpcServerPort = Optional.ofNullable(System.getenv("GRPC_SERVER_PORT"));
@@ -118,5 +124,15 @@ public class AppLogicImpl
         u = dao.register(email, name, pass);
 
         return u;
+    }
+    public void storeVideo(String username){
+
+        Optional<User> u = dao.getUserByName(username);
+        if (u.isPresent()){
+            User usuario = u.get();
+            String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+
+            daoV.storeVideo(usuario.getId(), Video.PROCESS_STATUS.PROCESSING, date, "/tmp/output");
+        }
     }
 }

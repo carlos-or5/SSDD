@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -105,16 +104,17 @@ public class SQLVideoDAO implements IVideoDAO {
 		return Video.PROCESS_STATUS.PROCESSING;
     }
 
-    public Optional<Video> storeVideo(String id, String userid, PROCESS_STATUS pstatus, String date, String filename)
+    public Optional<Video> storeVideo(String userid, PROCESS_STATUS pstatus, String date, String filename)
     {
         PreparedStatement stm;
         try
         {
+			String id = User.md5pass(filename+userid);
             stm = conn.prepareStatement("INSERT INTO videos VALUES (?,?,?,?,?,?)");
-            stm.setString(1, User.md5pass(filename+userid));
+            stm.setString(1, id);
             stm.setString(2, userid);
             stm.setInt(3, pstatus.ordinal());
-            stm.setDate(4, Date.valueOf(date));
+            stm.setString(4, date);
             stm.setString(5, filename);
 
             File file = new File("/tmp/output");
@@ -158,6 +158,4 @@ public class SQLVideoDAO implements IVideoDAO {
 		}
 	}
 
-
-    
 }
