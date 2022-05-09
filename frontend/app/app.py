@@ -85,14 +85,15 @@ def register():
 def profile():
     return render_template('profile.html')
 
-@app.route("/uploadvideo", methods=['GET','POST'])
+@app.route("/uploadVideo", methods=['GET','POST'])
 @login_required
 def uploadvideo():
     respuesta = None
     if request.method == 'POST':
         f = request.files['file']
         files = {'file':(f.filename, f)}
-        r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/uploadVideo", files=files)
+        username = current_user.name
+        r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/"+username+"/uploadVideo", files=files)
         respuesta = r.text
         return render_template('uploadvideo.html', respuesta = respuesta)
 
