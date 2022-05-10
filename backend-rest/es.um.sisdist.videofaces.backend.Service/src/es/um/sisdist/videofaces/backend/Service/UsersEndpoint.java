@@ -21,6 +21,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 // POJO, no interface no extends
@@ -46,11 +47,22 @@ public class UsersEndpoint
             @FormDataParam("file") FormDataContentDisposition fileMetaData, @PathParam("username") String username) throws Exception
     {
 	// El fichero que se recibe se copia en /tmp/output
-        if (fileMetaData.getFileName().isEmpty()){
+        if (fileMetaData.getFileName().isEmpty()) {
+            return Response.status(Status.FORBIDDEN).build();
+        }  
+
+        // Un fichero podria contener como nombre, por ejemplo ../video, lo que daria lugar a un Arbitrary File Upload
+        // https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload
+        // Comprobamos si el nombre del fichero no provoca que nos salgamos de /tmp/
+        java.nio.file.Path root = java.nio.file.Paths.get("/tmp/");
+        String path = "/tmp/" + fileMetaData.getFileName();
+        java.nio.file.Path subpath = root.normalize().resolve(path).normalize();
+
+        if(!(subpath.startsWith(root) && !Files.isSymbolicLink(subpath))) {
             return Response.status(Status.FORBIDDEN).build();
         }
 
-        File targetFile = new File("/tmp/output");
+        File targetFile = new File(path);
 
         java.nio.file.Files.copy(fileInputStream, targetFile.toPath(),
 			StandardCopyOption.REPLACE_EXISTING);
