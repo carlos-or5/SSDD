@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.google.protobuf.Empty;
 
+import es.um.sisdist.videofaces.backend.facedetect.VideoFaces;
 import es.um.sisdist.videofaces.backend.grpc.GrpcServiceGrpc;
 import es.um.sisdist.videofaces.backend.grpc.VideoAndChunkData;
 import es.um.sisdist.videofaces.backend.grpc.VideoAvailability;
@@ -17,7 +18,7 @@ class GrpcServiceImpl extends GrpcServiceGrpc.GrpcServiceImplBase
 {
 	private Logger logger;
 	
-    public GrpcServiceImpl(Logger logger) 
+    public GrpcServiceImpl(Logger logger)
     {
 		super();
 		this.logger = logger;
@@ -25,10 +26,26 @@ class GrpcServiceImpl extends GrpcServiceGrpc.GrpcServiceImplBase
 
     
 	@Override
-	public StreamObserver<VideoAndChunkData> processVideo(StreamObserver<Empty> responseObserver)
+	public StreamObserver<VideoSpec> processVideo(StreamObserver<Empty> responseObserver)
 	{
-		// TODO Auto-generated method stub
-		return super.processVideo(responseObserver);
+		responseObserver.onNext(Empty.newBuilder().build());
+		
+		return new StreamObserver<VideoSpec>() {
+			@Override
+			public void onCompleted() {
+				responseObserver.onCompleted();
+			}
+			
+			@Override
+			public void onError(Throwable t) {
+				// TODO
+			}
+			
+			@Override
+			public void onNext(VideoSpec vSpec) {
+				new VideoFaces(vSpec.getId()).run();
+			}
+		};
 	}
 
 	@Override

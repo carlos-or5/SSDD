@@ -9,7 +9,7 @@ package es.um.sisdist.videofaces.backend.grpc;
 
 service GrpcService
 {
-    rpc ProcessVideo(stream VideoAndChunkData) returns (google.protobuf.Empty);
+    rpc ProcessVideo(stream VideoSpec) returns (google.protobuf.Empty);
     rpc IsVideoReady(VideoSpec) returns (VideoAvailability);
 }
 

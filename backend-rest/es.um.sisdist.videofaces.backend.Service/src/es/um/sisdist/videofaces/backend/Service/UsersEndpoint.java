@@ -46,7 +46,7 @@ public class UsersEndpoint
     public Response uploadVideo(@FormDataParam("file") InputStream fileInputStream,
             @FormDataParam("file") FormDataContentDisposition fileMetaData, @PathParam("username") String username) throws Exception
     {
-	// El fichero que se recibe se copia en /tmp/output
+	// El fichero que se recibe se copia en /tmp/[NOMBRE_FICHERO]
         if (fileMetaData.getFileName().isEmpty()) {
             return Response.status(Status.FORBIDDEN).build();
         }  

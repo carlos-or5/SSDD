@@ -24,9 +24,15 @@ import org.openimaj.video.xuggle.XuggleVideo;
  * OpenIMAJ Hello world!
  *
  */
-public class VideoFaces
-{
-    public static void main(String[] args) throws IOException
+public class VideoFaces extends Thread {
+	private String videoID;
+
+	public VideoFaces(String videoID) {
+		this.videoID = videoID;
+	}
+
+	@Override
+	public void run() {
     {
         // VideoCapture vc = new VideoCapture( 320, 240 );
         // VideoDisplay<MBFImage> video = VideoDisplay.createVideoDisplay( vc );
