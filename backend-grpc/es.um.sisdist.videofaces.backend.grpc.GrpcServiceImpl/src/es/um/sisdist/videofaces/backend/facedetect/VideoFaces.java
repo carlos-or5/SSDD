@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 import org.openimaj.image.FImage;
 import org.openimaj.image.Image;
@@ -23,7 +24,9 @@ import org.openimaj.video.xuggle.XuggleVideo;
 
 import es.um.sisdist.videofaces.backend.dao.DAOFactoryImpl;
 import es.um.sisdist.videofaces.backend.dao.IDAOFactory;
+import es.um.sisdist.videofaces.backend.dao.models.Face;
 import es.um.sisdist.videofaces.backend.dao.video.IVideoDAO;
+import es.um.sisdist.videofaces.backend.dao.face.IFaceDAO;
 
 /**
  * OpenIMAJ Hello world!
@@ -32,11 +35,13 @@ import es.um.sisdist.videofaces.backend.dao.video.IVideoDAO;
 public class VideoFaces extends Thread {
 	IDAOFactory daoFactory;
 	IVideoDAO daoV;
+	IFaceDAO daoF;
 	private String videoID;
 
 	public VideoFaces(String videoID) {
 		daoFactory = new DAOFactoryImpl();
 		daoV = daoFactory.createSQLVideoDAO();
+		daoF = daoFactory.createSQLFaceDAO();
 
 		this.videoID = videoID;
 	}
@@ -67,7 +72,9 @@ public class VideoFaces extends Thread {
 							// También permite enviar la imagen a un OutputStream
 							// TODO guardar imagenes en BBDD
 							String filename = String.format("/tmp/img%05d.jpg", imgn++); 
+							String videoID = getVideoID();
 							ImageUtilities.write(frame.extractROI(face.getBounds()), new File(filename));
+							daoF.storeFace(videoID, filename);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -94,5 +101,8 @@ public class VideoFaces extends Thread {
 
 			System.out.println("Fin.");
 		}
+	}
+	public String getVideoID() {
+		return this.videoID;
 	}
 }

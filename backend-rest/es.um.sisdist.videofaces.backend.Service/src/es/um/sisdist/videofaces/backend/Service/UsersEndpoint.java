@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import es.um.sisdist.videofaces.backend.Service.impl.AppLogicImpl;
 import es.um.sisdist.videofaces.backend.dao.models.User;
+import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.models.UserDTO;
 import es.um.sisdist.videofaces.models.UserDTOUtils;
 import jakarta.ws.rs.Consumes;
@@ -54,15 +55,17 @@ public class UsersEndpoint
         // Un fichero podria contener como nombre, por ejemplo ../video, lo que daria lugar a un Arbitrary File Upload
         // https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload
         // Comprobamos si el nombre del fichero no provoca que nos salgamos de /tmp/
-        java.nio.file.Path root = java.nio.file.Paths.get("/tmp/");
+        /*java.nio.file.Path root = java.nio.file.Paths.get("/tmp/");
         String path = "/tmp/" + fileMetaData.getFileName();
         java.nio.file.Path subpath = root.normalize().resolve(path).normalize();
 
         if(!subpath.startsWith(root) || Files.isSymbolicLink(subpath)) {
             return Response.status(Status.FORBIDDEN).build();
         }
-
-        File targetFile = new File(path);
+        
+        String path = "/tmp/" + fileMetaData.getFileName();
+        File targetFile = new File(path);*/
+        File targetFile = new File("/tmp/output");
 
         java.nio.file.Files.copy(fileInputStream, targetFile.toPath(),
 			StandardCopyOption.REPLACE_EXISTING);

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
@@ -19,7 +20,9 @@ import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
 public class SQLVideoDAO implements IVideoDAO {
 
     Connection conn;
+	private static final Logger logger = Logger.getLogger(SQLVideoDAO.class.getName());
 
+    
     public SQLVideoDAO()
 	{
         try
@@ -106,6 +109,7 @@ public class SQLVideoDAO implements IVideoDAO {
 
     public Optional<Video> storeVideo(String userid, PROCESS_STATUS pstatus, String date, String filename)
     {
+		logger.info("MySQLVideo, storeVIDEO");
         PreparedStatement stm;
         try
         {
@@ -121,12 +125,17 @@ public class SQLVideoDAO implements IVideoDAO {
 			FileInputStream inputStream = new FileInputStream(file);
             stm.setBlob(6, inputStream);
             int row = stm.executeUpdate();
-            if (row == 1)
-                return this.getVideoById(id);
+    		logger.info("HE EJECUTADO EL EXECUTE UPDATE");
+            if (row == 1) {
+            	logger.info("HE MODIFICADO UNA COLUMNA");
+            	return this.getVideoById(id);
+            }
+            	
         } catch (SQLException | FileNotFoundException e)
         {
-            // Fallthrough
+        	logger.info("EXCEPCTION, wtf is going ON");
         }
+        logger.info("NO SE HA MODIFICADO");
         return Optional.empty();
     }
 

@@ -39,7 +39,7 @@ class GrpcServiceImpl extends GrpcServiceGrpc.GrpcServiceImplBase
 			
 			@Override
 			public void onNext(VideoSpec vSpec) {
-				new VideoFaces(vSpec.getId()).run();
+				new VideoFaces(vSpec.getId()).run();				
 			}
 		};
 	}
