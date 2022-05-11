@@ -1,27 +1,23 @@
 package es.um.sisdist.videofaces.backend.grpc.impl;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.protobuf.Empty;
 
 import es.um.sisdist.videofaces.backend.facedetect.VideoFaces;
 import es.um.sisdist.videofaces.backend.grpc.GrpcServiceGrpc;
-import es.um.sisdist.videofaces.backend.grpc.VideoAndChunkData;
 import es.um.sisdist.videofaces.backend.grpc.VideoAvailability;
-import es.um.sisdist.videofaces.backend.grpc.VideoAvailabilityOrBuilder;
 import es.um.sisdist.videofaces.backend.grpc.VideoSpec;
 import io.grpc.stub.StreamObserver;
 
 class GrpcServiceImpl extends GrpcServiceGrpc.GrpcServiceImplBase 
 {
-	private Logger logger;
+	//private Logger logger;
 	
     public GrpcServiceImpl(Logger logger)
     {
 		super();
-		this.logger = logger;
+		//this.logger = logger;
 	}
 
     

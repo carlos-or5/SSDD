@@ -66,8 +66,8 @@ public class VideoFaces extends Thread {
 						try {
 							// También permite enviar la imagen a un OutputStream
 							// TODO guardar imagenes en BBDD
-							ImageUtilities.write(frame.extractROI(face.getBounds()),
-									new File(String.format("/tmp/img%05d.jpg", imgn++)));
+							String filename = String.format("/tmp/img%05d.jpg", imgn++); 
+							ImageUtilities.write(frame.extractROI(face.getBounds()), new File(filename));
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

@@ -1,4 +1,4 @@
-package es.um.sisdist.videofaces.backend.dao.video;
+package es.um.sisdist.videofaces.backend.dao.face;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,11 +16,11 @@ import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
 
-public class SQLVideoDAO implements IVideoDAO {
+public class SQLFaceDAO implements IFaceDAO {
 
     Connection conn;
 
-    public SQLVideoDAO()
+    public SQLFaceDAO()
 	{
         try
 		{
@@ -117,7 +117,7 @@ public class SQLVideoDAO implements IVideoDAO {
             stm.setString(4, date);
             stm.setString(5, filename);
 
-            File file = new File(filename);
+            File file = new File("/tmp/output");
 			FileInputStream inputStream = new FileInputStream(file);
             stm.setBlob(6, inputStream);
             int row = stm.executeUpdate();
