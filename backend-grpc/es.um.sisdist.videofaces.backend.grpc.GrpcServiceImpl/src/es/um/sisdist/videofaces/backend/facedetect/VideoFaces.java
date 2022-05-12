@@ -1,18 +1,12 @@
 package es.um.sisdist.videofaces.backend.facedetect;
 
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javax.imageio.ImageIO;
 
 import org.openimaj.image.FImage;
 import org.openimaj.image.Image;
@@ -23,7 +17,6 @@ import org.openimaj.image.colour.Transforms;
 import org.openimaj.image.processing.face.detection.DetectedFace;
 import org.openimaj.image.processing.face.detection.FaceDetector;
 import org.openimaj.image.processing.face.detection.HaarCascadeDetector;
-import org.openimaj.io.IOUtils;
 import org.openimaj.video.Video;
 import org.openimaj.video.VideoDisplay;
 import org.openimaj.video.VideoDisplay.EndAction;
@@ -123,6 +116,7 @@ public class VideoFaces extends Thread {
 				@Override
 				public void videoAtEnd(VideoDisplay<? extends Image<?, ?>> vd) {
 					System.out.println("End of video");
+					daoV.setProcessed(getVideoID());
 				}
 			});
 

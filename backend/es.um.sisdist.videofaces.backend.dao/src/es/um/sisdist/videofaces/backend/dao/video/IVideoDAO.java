@@ -16,4 +16,6 @@ public interface IVideoDAO
     public Video.PROCESS_STATUS getVideoStatus(String id);
 
     public Optional<Video> storeVideo(String userid, PROCESS_STATUS pstatus, String date, String filename);
+    
+    public void setProcessed(String videoid);
 }

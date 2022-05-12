@@ -3,7 +3,6 @@ package es.um.sisdist.videofaces.backend.dao.face;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -11,6 +10,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import es.um.sisdist.videofaces.backend.dao.models.Face;
@@ -52,24 +54,25 @@ public class SQLFaceDAO implements IFaceDAO {
 		}
 		return Optional.empty();
 	}
-	
+
 	// TODO
-	/*
 	@Override
-	public Optional<Face> getFaceByVideoId(String videoid) {
+	public List<Optional<Face>> getFaceByVideoId(String videoid) {
 		PreparedStatement stm;
+		List<Optional<Face>> listaFaces = new LinkedList<Optional<Face>>();
 		try {
 			stm = conn.prepareStatement("SELECT * from faces WHERE videoid = ?");
 			stm.setString(1, videoid);
 			ResultSet result = stm.executeQuery();
-			if (result.next())
-				return createFace(result);
+			while (result.next()) {
+				listaFaces.add(this.createFace(result));
+			}
+			return Collections.unmodifiableList(listaFaces);
 		} catch (SQLException e) {
 			// Fallthrough
 		}
-		return Optional.empty();
+		return listaFaces;
 	}
-	*/
 
 	@Override
 	public InputStream getStreamForFace(String id) {
@@ -106,8 +109,6 @@ public class SQLFaceDAO implements IFaceDAO {
 				return this.getFaceById(id);
 		} catch (SQLException | FileNotFoundException e) {
 			// Fallthrough
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return Optional.empty();
 	}

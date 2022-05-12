@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
@@ -21,6 +20,7 @@ public class SQLVideoDAO implements IVideoDAO {
 
 	Connection conn;
 
+	@SuppressWarnings("deprecation")
 	public SQLVideoDAO() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
@@ -118,6 +118,18 @@ public class SQLVideoDAO implements IVideoDAO {
 			// Si salta excepcion
 		}	
 		return Optional.empty();
+	}
+	
+	public void setProcessed(String videoid){
+		PreparedStatement stm;
+        try{
+			stm = conn.prepareStatement("UPDATE videos SET process_status = 1 WHERE id = ?");
+			stm.setString(1, videoid);
+			stm.executeUpdate();
+		} catch (SQLException e)
+		{
+			// Fallthrough
+		}
 	}
 
 	private Optional<Video> createVideo(ResultSet result) {
