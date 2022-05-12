@@ -86,10 +86,12 @@ public class UsersEndpoint
     {
         // Llamar a metodo SQL para devolver los videos (ID Video + Filename en JSON)
         HashMap<String, String> mapaVideos = impl.getVideos(username);
-        
+        if (mapaVideos.isEmpty()){
+        	Response.status(Status.FORBIDDEN).build();
+        }
         // Devolver el hahsmap
-        return Response.ok(UserDTOUtils.toDTO(u.get())).build();
-            
+        return Response.ok(mapaVideos).build();
+        
     }
     
 
