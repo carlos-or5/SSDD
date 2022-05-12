@@ -52,6 +52,24 @@ public class SQLFaceDAO implements IFaceDAO {
 		}
 		return Optional.empty();
 	}
+	
+	// TODO
+	/*
+	@Override
+	public Optional<Face> getFaceByVideoId(String videoid) {
+		PreparedStatement stm;
+		try {
+			stm = conn.prepareStatement("SELECT * from faces WHERE videoid = ?");
+			stm.setString(1, videoid);
+			ResultSet result = stm.executeQuery();
+			if (result.next())
+				return createFace(result);
+		} catch (SQLException e) {
+			// Fallthrough
+		}
+		return Optional.empty();
+	}
+	*/
 
 	@Override
 	public InputStream getStreamForFace(String id) {
@@ -78,7 +96,7 @@ public class SQLFaceDAO implements IFaceDAO {
 			File file = new File(filename);
 			FileInputStream inputStream = new FileInputStream(file);
 
-			String id = User.md5pass(videoid + (new String(inputStream.readNBytes(50))));
+			String id = User.md5pass(videoid + filename);
 			stm = conn.prepareStatement("INSERT INTO faces VALUES (?,?,?)");
 			stm.setString(1, id);
 			stm.setString(2, videoid);
