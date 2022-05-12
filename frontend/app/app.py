@@ -90,6 +90,21 @@ def profile():
 def uploadvideo():
     respuesta = None
     if request.method == 'POST':
+        username = current_user.name
+        r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/"+username+"/showVideos")
+        respuesta = r.text
+        if r.status_code != 200:
+                respuesta = 'Usuario no valido'
+        return render_template('showVideos.html', respuesta = respuesta)
+
+    else:
+        return render_template('showVideos.html')
+
+@app.route("/showvideos", methods=['GET','POST'])
+@login_required
+def showvideos():
+    respuesta = None
+    if request.method == 'POST':
         f = request.files['file']
         files = {'file':(f.filename, f)}
         username = current_user.name

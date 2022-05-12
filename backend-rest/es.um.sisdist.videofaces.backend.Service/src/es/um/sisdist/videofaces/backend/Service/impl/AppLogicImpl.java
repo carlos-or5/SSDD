@@ -5,6 +5,8 @@ package es.um.sisdist.videofaces.backend.Service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -104,9 +106,10 @@ public class AppLogicImpl {
 		}
 
 		Optional<User> u = dao.getUserByEmail(email);
+		Optional<User> u2 = dao.getUserByName(name);
 
 		// Si el email a registrar esta creado, entonces devolver error
-		if (u.isPresent()) {
+		if (u.isPresent() || u2.isPresent()) {
 			// String hashed_pass = User.md5pass(pass);
 			// if (0 == hashed_pass.compareTo(u.get().getPassword_hash()))
 			// return u;
@@ -174,4 +177,25 @@ public class AppLogicImpl {
 		return Optional.empty();
 
 	}
+
+    public HashMap<String, String> getVideos(String username) {
+    	Optional<User> u = dao.getUserByName(username);
+    	HashMap<String, String> mapVideos = new HashMap<String, String>();
+    	// Si existe el usuario
+    	if (u.isPresent()){
+    		User usuario = u.get();
+    		String id = usuario.getId();
+    		List<Optional<Video>> listaVideos = daoV.getVideosById(id);
+    		for (Optional<Video> video : listaVideos){
+    			if(video.isPresent()){
+    				Video v = video.get();
+    				String videoId = v.getId();
+    				String filename = v.getFilename();
+    				mapVideos.put(videoId, filename);
+    			}
+    		}
+    	}
+    	return mapVideos;
+		
+    }
 }

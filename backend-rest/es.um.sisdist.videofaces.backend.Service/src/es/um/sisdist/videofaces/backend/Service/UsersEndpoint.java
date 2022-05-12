@@ -1,5 +1,6 @@
 package es.um.sisdist.videofaces.backend.Service;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -77,5 +78,19 @@ public class UsersEndpoint
 
         return Response.ok(fileMetaData.getFileName()).build();
     }
+
+    @POST
+    @Path("/{username}/showVideos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerUser(@PathParam("username") String username)
+    {
+        // Llamar a metodo SQL para devolver los videos (ID Video + Filename en JSON)
+        HashMap<String, String> mapaVideos = impl.getVideos(username);
+        
+        // Devolver el hahsmap
+        return Response.ok(UserDTOUtils.toDTO(u.get())).build();
+            
+    }
+    
 
 }

@@ -11,6 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
@@ -130,6 +133,24 @@ public class SQLVideoDAO implements IVideoDAO {
 		{
 			// Fallthrough
 		}
+	}
+
+	public List<Optional<Video>> getVideosById(String id){
+		PreparedStatement stm;
+		List<Optional<Video>> listaVideos = new LinkedList<Optional<Video>>();
+		try {
+			stm = conn.prepareStatement("SELECT * from videos WHERE userid = ? AND process_status = 1");
+			stm.setString(1, id);
+			ResultSet result = stm.executeQuery();
+			while (result.next()) {
+				listaVideos.add(this.createVideo(result));
+			}
+			return Collections.unmodifiableList(listaVideos);
+		} catch (SQLException e) {
+			// Fallthrough
+		}
+		return listaVideos;
+
 	}
 
 	private Optional<Video> createVideo(ResultSet result) {
