@@ -3,17 +3,28 @@
  */
 package es.um.sisdist.videofaces.backend.dao.models;
 
+import java.util.Arrays;
+
 public class Face {
 	private String id;
 	private String videoid;
+	private byte[] imagedata;
+
+	public byte[] getImagedata() {
+		return imagedata;
+	}
+
+	public void setImagedata(byte[] imagedata) {
+		this.imagedata = Arrays.copyOf(imagedata, imagedata.length);
+	}
 
 	public Face() {
 	}
 
-	public Face(String id, String videoid) {
-		super();
+	public Face(String id, String videoid, byte[] imagedata) {
 		this.id = id;
 		this.videoid = videoid;
+		this.imagedata = Arrays.copyOf(imagedata, imagedata.length);
 	}
 
 	/**

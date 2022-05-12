@@ -118,8 +118,10 @@ public class SQLFaceDAO implements IFaceDAO {
 		// String id, String userid, PROCESS_STATUS pstatus, String date, String
 		// filename
 		try {
+			Blob blob = result.getBlob(3);
+			byte[] imagedata = blob.getBytes(1, (int) blob.length());
 			return Optional.of(new Face(result.getString(1), // id
-					result.getString(2))); // email
+					result.getString(2), imagedata)); // email
 		} catch (SQLException e) {
 			return Optional.empty();
 		}
