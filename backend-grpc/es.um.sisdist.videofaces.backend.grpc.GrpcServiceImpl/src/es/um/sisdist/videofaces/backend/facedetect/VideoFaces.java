@@ -3,17 +3,14 @@ package es.um.sisdist.videofaces.backend.facedetect;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
 import org.openimaj.image.FImage;
 import org.openimaj.image.Image;
-import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.image.colour.RGBColour;
 import org.openimaj.image.colour.Transforms;
@@ -29,7 +26,6 @@ import org.openimaj.video.xuggle.XuggleVideo;
 
 import es.um.sisdist.videofaces.backend.dao.DAOFactoryImpl;
 import es.um.sisdist.videofaces.backend.dao.IDAOFactory;
-import es.um.sisdist.videofaces.backend.dao.models.Face;
 import es.um.sisdist.videofaces.backend.dao.video.IVideoDAO;
 import es.um.sisdist.videofaces.backend.dao.face.IFaceDAO;
 
@@ -75,9 +71,8 @@ public class VideoFaces extends Thread {
 						
 						frame.drawShape(face.getBounds(), RGBColour.RED);
 						try {
-							// TambiÃ©n permite enviar la imagen a un OutputStream
+							// Tambien permite enviar la imagen a un OutputStream
 							// TODO guardar imagenes en BBDD
-							// También permite enviar la imagen a un OutputStream
 							String path = "/tmp/" + imgn + ".jpg";
 							imgn++;
 							MBFImage imagen = frame.extractROI(face.getBounds());
@@ -88,7 +83,6 @@ public class VideoFaces extends Thread {
 	                                //new File(path));
 							daoF.storeFace(videoID, fis);
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						System.out.println("!");

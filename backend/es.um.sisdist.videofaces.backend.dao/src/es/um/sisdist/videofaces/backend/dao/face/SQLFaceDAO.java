@@ -1,7 +1,5 @@
 package es.um.sisdist.videofaces.backend.dao.face;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,13 +13,12 @@ import java.util.Optional;
 
 import es.um.sisdist.videofaces.backend.dao.models.Face;
 import es.um.sisdist.videofaces.backend.dao.models.User;
-import es.um.sisdist.videofaces.backend.dao.models.Video;
-import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
 
 public class SQLFaceDAO implements IFaceDAO {
 
 	Connection conn;
 
+	@SuppressWarnings("deprecation")
 	public SQLFaceDAO() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();

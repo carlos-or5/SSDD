@@ -61,7 +61,7 @@ public class UsersEndpoint
         String path = "/tmp/" + fileMetaData.getFileName();
         java.nio.file.Path subpath = root.normalize().resolve(path).normalize();
 
-        if(!(subpath.startsWith(root) && !Files.isSymbolicLink(subpath))) {
+        if(!subpath.startsWith(root) || Files.isSymbolicLink(subpath)) {
             return Response.status(Status.FORBIDDEN).build();
         }
 
