@@ -121,8 +121,7 @@ public class AppLogicImpl {
 	}
 
 	public Optional<Video> storeVideo(String username, String filename) {
-		
-		
+
 		logger.info("Me ha llegado una peticion para almacenar un video");
 		Optional<User> u = dao.getUserByName(username);
 		if (u.isPresent()) {
@@ -132,13 +131,13 @@ public class AppLogicImpl {
 
 			Optional<Video> v = daoV.storeVideo(usuario.getId(), Video.PROCESS_STATUS.PROCESSING, date, filename);
 			logger.info("Store Video en MySQL ejecutado, voy a comprobar si esta creado en base de datos: ");
-			/*if (v.isPresent()) {
+			if (v.isPresent()) {
 				logger.info("Video creado en base de datos, voy llamar a GRPC para procesarlo");
 				Video video = v.get();
 				final CountDownLatch finisLatch = new CountDownLatch(1);
 				StreamObserver<Empty> soEmpty = new StreamObserver<Empty>() {
 					@Override
-					public void onCompleted() { 
+					public void onCompleted() {
 						finisLatch.countDown();
 					}
 
@@ -164,15 +163,15 @@ public class AppLogicImpl {
 						logger.info(" Not received response ! ");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-				}*/
-				
+				}
+
 				logger.info("");
 				return v;
 			}
 			logger.info("Video no creado en base de datos");
 			return Optional.empty();
-		//}
-		//return Optional.empty();
-		
+		}
+		return Optional.empty();
+
 	}
 }

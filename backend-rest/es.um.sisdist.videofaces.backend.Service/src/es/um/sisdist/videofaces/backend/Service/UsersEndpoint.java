@@ -1,6 +1,7 @@
 package es.um.sisdist.videofaces.backend.Service;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import es.um.sisdist.videofaces.backend.Service.impl.AppLogicImpl;
 import es.um.sisdist.videofaces.backend.dao.models.User;
@@ -31,7 +32,8 @@ import java.nio.file.StandardCopyOption;
 public class UsersEndpoint
 {
     private AppLogicImpl impl = AppLogicImpl.getInstance();
-    
+	private static final Logger logger = Logger.getLogger(UsersEndpoint.class.getName());
+	
     @GET
     @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,23 +57,24 @@ public class UsersEndpoint
         // Un fichero podria contener como nombre, por ejemplo ../video, lo que daria lugar a un Arbitrary File Upload
         // https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload
         // Comprobamos si el nombre del fichero no provoca que nos salgamos de /tmp/
-        /*java.nio.file.Path root = java.nio.file.Paths.get("/tmp/");
+        java.nio.file.Path root = java.nio.file.Paths.get("/tmp/");
         String path = "/tmp/" + fileMetaData.getFileName();
         java.nio.file.Path subpath = root.normalize().resolve(path).normalize();
 
-        if(!subpath.startsWith(root) || Files.isSymbolicLink(subpath)) {
+        if(!(subpath.startsWith(root) && !Files.isSymbolicLink(subpath))) {
             return Response.status(Status.FORBIDDEN).build();
         }
-        
-        String path = "/tmp/" + fileMetaData.getFileName();
-        File targetFile = new File(path);*/
-        File targetFile = new File("/tmp/output");
+
+        File targetFile = new File(path);
 
         java.nio.file.Files.copy(fileInputStream, targetFile.toPath(),
 			StandardCopyOption.REPLACE_EXISTING);
-
         fileInputStream.close();
-        impl.storeVideo(username, fileMetaData.getFileName());
+        Optional<Video> v = impl.storeVideo(username, fileMetaData.getFileName());
+        Video video = v.get();
+        
+    	logger.info("El id del video subido es: "+video.getId());
+
         return Response.ok(fileMetaData.getFileName()).build();
     }
 

@@ -1,10 +1,15 @@
 package es.um.sisdist.videofaces.backend.facedetect;
 
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import org.openimaj.image.FImage;
 import org.openimaj.image.Image;
@@ -67,14 +72,21 @@ public class VideoFaces extends Thread {
 					List<DetectedFace> faces = fd.detectFaces(Transforms.calculateIntensity(frame));
 
 					for (DetectedFace face : faces) {
+						
 						frame.drawShape(face.getBounds(), RGBColour.RED);
 						try {
 							// TambiÃ©n permite enviar la imagen a un OutputStream
 							// TODO guardar imagenes en BBDD
-							String filename = String.format("/tmp/img%05d.jpg", imgn++); 
-							String videoID = getVideoID();
-							ImageUtilities.write(frame.extractROI(face.getBounds()), new File(filename));
-							daoF.storeFace(videoID, filename);
+							// También permite enviar la imagen a un OutputStream
+							String path = "/tmp/" + imgn + ".jpg";
+							imgn++;
+							MBFImage imagen = frame.extractROI(face.getBounds());
+							ByteArrayOutputStream os = new ByteArrayOutputStream();
+							ImageIO.write((RenderedImage) imagen,"jpg", os); 
+							InputStream fis = new ByteArrayInputStream(os.toByteArray());
+	                        //ImageUtilities.write(frame.extractROI(face.getBounds()),
+	                                //new File(path));
+							daoF.storeFace(videoID, fis);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

@@ -61,9 +61,11 @@ public class SQLFaceDAO implements IFaceDAO {
 			stm = conn.prepareStatement("SELECT imagedata from faces WHERE id = ?");
 			stm.setString(1, id);
 			ResultSet result = stm.executeQuery();
-			Blob objetoblob = result.getBlob(1);
-			InputStream resultado = objetoblob.getBinaryStream();
-			return resultado;
+			if (result.next()) {
+				Blob objetoblob = result.getBlob(1);
+				InputStream resultado = objetoblob.getBinaryStream();
+				return resultado;
+			}
 
 		} catch (SQLException e) {
 			// Fallthrough
@@ -71,17 +73,17 @@ public class SQLFaceDAO implements IFaceDAO {
 		return null;
 	}
 
-	public Optional<Face> storeFace(String videoid, String filename) {
+	public Optional<Face> storeFace(String videoid, InputStream fis) {
 		PreparedStatement stm;
 		try {
-			File file = new File(filename);
-			FileInputStream inputStream = new FileInputStream(file);
+			//File file = new File(filename);
+			//FileInputStream inputStream = new FileInputStream(file);
 
-			String id = User.md5pass(videoid + (new String(inputStream.readNBytes(50))));
+			String id = User.md5pass(videoid + (new String(fis.readNBytes(50))));
 			stm = conn.prepareStatement("INSERT INTO faces VALUES (?,?,?)");
 			stm.setString(1, id);
 			stm.setString(2, videoid);
-			stm.setBlob(3, inputStream);
+			stm.setBlob(3, fis);
 			int row = stm.executeUpdate();
 			if (row == 1)
 				return this.getFaceById(id);
