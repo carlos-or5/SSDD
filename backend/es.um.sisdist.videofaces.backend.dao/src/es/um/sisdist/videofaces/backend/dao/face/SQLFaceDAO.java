@@ -1,5 +1,7 @@
 package es.um.sisdist.videofaces.backend.dao.face;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,17 +72,17 @@ public class SQLFaceDAO implements IFaceDAO {
 		return null;
 	}
 
-	public Optional<Face> storeFace(String videoid, InputStream fis) {
+	public Optional<Face> storeFace(String videoid, String filename) {
 		PreparedStatement stm;
 		try {
-			//File file = new File(filename);
-			//FileInputStream inputStream = new FileInputStream(file);
+			File file = new File(filename);
+			FileInputStream inputStream = new FileInputStream(file);
 
-			String id = User.md5pass(videoid + (new String(fis.readNBytes(50))));
+			String id = User.md5pass(videoid + (new String(inputStream.readNBytes(50))));
 			stm = conn.prepareStatement("INSERT INTO faces VALUES (?,?,?)");
 			stm.setString(1, id);
 			stm.setString(2, videoid);
-			stm.setBlob(3, fis);
+			stm.setBlob(3, inputStream);
 			int row = stm.executeUpdate();
 			if (row == 1)
 				return this.getFaceById(id);

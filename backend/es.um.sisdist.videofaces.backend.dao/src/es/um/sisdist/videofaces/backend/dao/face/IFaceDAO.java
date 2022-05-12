@@ -12,5 +12,5 @@ public interface IFaceDAO
     // Get stream of video data
     public InputStream getStreamForFace(String id);
 
-    public Optional<Face> storeFace(String videoid, InputStream fis);
+    public Optional<Face> storeFace(String videoid, String path);
 }
