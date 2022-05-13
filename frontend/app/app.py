@@ -7,6 +7,7 @@ from models import users, User
 # Login
 from forms import LoginForm, RegisterForm, SendVideoForm
 
+
 import os
 import json
 import requests
@@ -109,9 +110,12 @@ def showvideos():
     username = current_user.name
     r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/"+username+"/showVideos")
     respuesta = r.text
+    response_json = json.loads(respuesta)
+    listavideos = tuple(response_json.items())
     if r.status_code != 200:
         respuesta = 'No existen videos procesados para este usuario.'
-    return render_template('showvideos.html', respuesta = respuesta)
+    #return render_template('showvideos.html', respuesta = response_json)
+    return render_template('showvideostable.html', listavideos = listavideos)
 
 @app.route('/logout')
 @login_required

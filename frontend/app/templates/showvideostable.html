@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+table, th, td {
+  border:1px solid black;
+  text-align: center;
+  vertical-align: middle;
+}
+</style>
+<body>
+
+<h2>Table with your processed videos</h2>
+
+<table style="width:100%">
+  <tr>
+    <th>Video ID</th>
+    <th>FileName</th>
+  </tr>
+
+  <!-- Para cada video videoid, filename aniadir una columna a la tabla -->
+  
+  {% for videoid, filename in listavideos %}
+  <tr>
+    <td>{{ videoid }}</td>
+    <td>{{ filename }}</td>
+  </tr>
+  {% endfor %}
+  <tr>
+</table>
+
+</body>
+{% endblock %}
+
