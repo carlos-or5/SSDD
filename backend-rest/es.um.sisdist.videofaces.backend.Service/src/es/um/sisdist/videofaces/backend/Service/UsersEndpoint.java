@@ -22,6 +22,9 @@ import jakarta.ws.rs.core.Response.Status;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -79,18 +82,20 @@ public class UsersEndpoint
         return Response.ok(fileMetaData.getFileName()).build();
     }
 
-    @POST
+    @GET
     @Path("/{username}/showVideos")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registerUser(@PathParam("username") String username)
+    public Response registerUser(@PathParam("username") String username) throws JsonProcessingException
     {
         // Llamar a metodo SQL para devolver los videos (ID Video + Filename en JSON)
         HashMap<String, String> mapaVideos = impl.getVideos(username);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String stringMapa = objectMapper.writeValueAsString(mapaVideos);
         if (mapaVideos.isEmpty()){
         	Response.status(Status.FORBIDDEN).build();
         }
         // Devolver el hahsmap
-        return Response.ok(mapaVideos).build();
+        return Response.ok(stringMapa).build();
         
     }
     

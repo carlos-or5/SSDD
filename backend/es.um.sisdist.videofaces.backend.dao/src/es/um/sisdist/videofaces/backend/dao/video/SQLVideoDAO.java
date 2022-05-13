@@ -162,14 +162,14 @@ public class SQLVideoDAO implements IVideoDAO {
 				return Optional.of(new Video(result.getString(1), // id
 						result.getString(2), // userid
 						Video.PROCESS_STATUS.PROCESSED, // status
-						result.getString(3), // filename
-						result.getString(4))); // name
+						result.getString(4), // date
+						result.getString(5))); // filename
 			} else {
 				return Optional.of(new Video(result.getString(1), // id
 						result.getString(2), // userid
 						Video.PROCESS_STATUS.PROCESSING, // status
-						result.getString(3), // filename
-						result.getString(4))); // name
+						result.getString(4), // date
+						result.getString(5))); // filename
 
 			}
 		} catch (SQLException e) {
