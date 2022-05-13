@@ -20,5 +20,5 @@ public interface IVideoDAO
     
     public void setProcessed(String videoid);
 
-    public List<Optional<Video>> getVideosById(String id);
+    public List<Optional<Video>> getVideosByUserId(String id);
 }

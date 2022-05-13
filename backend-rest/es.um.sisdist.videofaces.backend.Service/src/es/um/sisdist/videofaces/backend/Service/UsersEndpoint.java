@@ -1,11 +1,10 @@
 package es.um.sisdist.videofaces.backend.Service;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
 import es.um.sisdist.videofaces.backend.Service.impl.AppLogicImpl;
-import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.models.UserDTO;
 import es.um.sisdist.videofaces.models.UserDTOUtils;
@@ -88,7 +87,7 @@ public class UsersEndpoint
     public Response registerUser(@PathParam("username") String username) throws JsonProcessingException
     {
         // Llamar a metodo SQL para devolver los videos (ID Video + Filename en JSON)
-        HashMap<String, String> mapaVideos = impl.getVideos(username);
+        Map<String, String> mapaVideos = impl.getVideos(username);
         ObjectMapper objectMapper = new ObjectMapper();
         String stringMapa = objectMapper.writeValueAsString(mapaVideos);
         if (mapaVideos.isEmpty()){

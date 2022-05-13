@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block content %}
 <style>
 table, th, td {
@@ -11,13 +12,13 @@ table, th, td {
 
 <h2>Table with your processed videos</h2>
 
-<table style="width:100%">
+<table class="table table-dark" style="width:100%">
   <tr>
     <th>Video ID</th>
     <th>FileName</th>
   </tr>
 
-  <!-- Para cada video videoid, filename aniadir una columna a la tabla -->
+  <!-- Para cada video videoid, filename anadir una columna a la tabla -->
   
   {% for videoid, filename in listavideos %}
   <tr>

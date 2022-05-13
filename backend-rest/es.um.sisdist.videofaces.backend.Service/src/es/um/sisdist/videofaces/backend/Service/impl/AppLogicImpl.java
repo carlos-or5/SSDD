@@ -4,9 +4,11 @@
 package es.um.sisdist.videofaces.backend.Service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +18,8 @@ import com.google.protobuf.Empty;
 
 import es.um.sisdist.videofaces.backend.dao.DAOFactoryImpl;
 import es.um.sisdist.videofaces.backend.dao.IDAOFactory;
+import es.um.sisdist.videofaces.backend.dao.face.IFaceDAO;
+import es.um.sisdist.videofaces.backend.dao.models.Face;
 import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.backend.dao.user.IUserDAO;
@@ -35,6 +39,7 @@ public class AppLogicImpl {
 	IDAOFactory daoFactory;
 	IUserDAO dao;
 	IVideoDAO daoV;
+	IFaceDAO daoF;
 
 	private static final Logger logger = Logger.getLogger(AppLogicImpl.class.getName());
 
@@ -48,6 +53,7 @@ public class AppLogicImpl {
 		daoFactory = new DAOFactoryImpl();
 		dao = daoFactory.createSQLUserDAO();
 		daoV = daoFactory.createSQLVideoDAO();
+		daoF = daoFactory.createSQLFaceDAO();
 
 		Optional<String> grpcServerName = Optional.ofNullable(System.getenv("GRPC_SERVER"));
 		Optional<String> grpcServerPort = Optional.ofNullable(System.getenv("GRPC_SERVER_PORT"));
@@ -178,16 +184,16 @@ public class AppLogicImpl {
 
 	}
 
-    public HashMap<String, String> getVideos(String username) {
+    public Map<String, String> getVideos(String username) {
     	Optional<User> u = dao.getUserByName(username);
     	HashMap<String, String> mapVideos = new HashMap<String, String>();
     	// Si existe el usuario
     	if (u.isPresent()){
     		User usuario = u.get();
     		String id = usuario.getId();
-    		List<Optional<Video>> listaVideos = daoV.getVideosById(id);
+    		List<Optional<Video>> listaVideos = daoV.getVideosByUserId(id);
     		for (Optional<Video> video : listaVideos){
-    			if(video.isPresent()){
+    			if(video.isPresent()) {
     				Video v = video.get();
     				String videoId = v.getId();
     				String filename = v.getFilename();
@@ -195,7 +201,20 @@ public class AppLogicImpl {
     			}
     		}
     	}
-    	return mapVideos;
+    	return Collections.unmodifiableMap(mapVideos);
 		
     }
+
+	public Map<String, byte[]> getFacesOfVideo(String videoid) {		
+		List<Optional<Face>> faces = daoF.getFaceByVideoId(videoid);
+		HashMap<String, byte[]> resul = new HashMap<String, byte[]>();
+		
+		for (Optional<Face> face : faces) {
+			if (face.isPresent()) {
+				resul.put(face.get().getId(), face.get().getImagedata());
+			}
+		}
+		
+		return Collections.unmodifiableMap(resul);
+	}
 }

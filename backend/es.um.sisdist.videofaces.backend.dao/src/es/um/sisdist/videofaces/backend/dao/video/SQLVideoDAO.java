@@ -135,7 +135,7 @@ public class SQLVideoDAO implements IVideoDAO {
 		}
 	}
 
-	public List<Optional<Video>> getVideosById(String id){
+	public List<Optional<Video>> getVideosByUserId(String id){
 		PreparedStatement stm;
 		List<Optional<Video>> listaVideos = new LinkedList<Optional<Video>>();
 		try {
