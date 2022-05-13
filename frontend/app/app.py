@@ -94,7 +94,7 @@ def uploadvideo():
         f = request.files['file']
         files = {'file':(f.filename, f)}
         username = current_user.name
-        r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/"+username+"/uploadVideo", files=files)
+        r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/{username}/uploadVideo", files=files)
         respuesta = r.text
         if r.status_code != 200:
                 respuesta = 'No dejar el video en blanco. Inserta un video'
@@ -103,19 +103,31 @@ def uploadvideo():
     else:
         return render_template('uploadvideo.html')
 
-@app.route("/showvideos", methods=['GET','POST'])
+@app.route("/showvideos", methods=['GET'])
 @login_required
 def showvideos():
     respuesta = None
     username = current_user.name
-    r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/"+username+"/showVideos")
+    r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/{username}/showVideos")
     respuesta = r.text
     response_json = json.loads(respuesta)
     listavideos = tuple(response_json.items())
     if r.status_code != 200:
         respuesta = 'No existen videos procesados para este usuario.'
-    #return render_template('showvideos.html', respuesta = response_json)
     return render_template('showvideostable.html', listavideos = listavideos)
+
+@app.route("/showfaces/<videoid>", methods=['GET'])
+@login_required
+def showfaces(videoid):
+    respuesta = None
+    username = current_user.name
+    r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/videos/{videoid}/showFaces")
+    respuesta = r.text
+    response_json = json.loads(respuesta)
+    listafaces = tuple(response_json.items())
+    if r.status_code != 200:
+        respuesta = 'No existen caras para este video.'
+    return render_template('showfacestable.html', listafaces = listafaces)    
 
 @app.route('/logout')
 @login_required
