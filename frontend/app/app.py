@@ -47,8 +47,8 @@ def login():
             #    error = 'Invalid Credentials. Please try again.'
             else:
                 response_json = json.loads(r.text)
-                user = User(response_json.get("id"), response_json.get("name"), form.email.data.encode('utf-8'),
-                            form.password.data.encode('utf-8'))
+                user = User(response_json.get("id"), response_json.get("name"), response_json.get("email"),
+                            form.password.data.encode('utf-8'), response_json.get("visits"), response_json.get("token"))
                 users.append(user)
                 login_user(user, remember=form.remember_me.data)
                 return redirect(url_for('index'))
@@ -73,8 +73,8 @@ def register():
             #    error = 'Invalid Credentials. Please try again.'
             else:
                 response_json = json.loads(r.text)
-                user = User(response_json.get("id"), response_json.get("name"), form.email.data.encode('utf-8'),
-                            form.password.data.encode('utf-8'))
+                user = User(response_json.get("id"), response_json.get("name"), response_json.get("email"),
+                            form.password.data.encode('utf-8'), response_json.get("visits"), response_json.get("token"))
                 users.append(user)
                 login_user(user)
                 return redirect(url_for('index'))

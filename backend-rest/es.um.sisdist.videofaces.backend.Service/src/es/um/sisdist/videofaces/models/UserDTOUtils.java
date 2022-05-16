@@ -17,7 +17,7 @@ public class UserDTOUtils
 				udto.getEmail(),
 				udto.getPassword(),
 				udto.getName(),
-				udto.getTOKEN(),
+				udto.getToken(),
 				udto.getVisits()
 				);
 	}
@@ -28,7 +28,7 @@ public class UserDTOUtils
 				u.getEmail(),
 				"", // Password never is returned back
 				u.getName(),
-				u.getTOKEN(),
+				u.getToken(),
 				u.getVisits()
 				);
 	}

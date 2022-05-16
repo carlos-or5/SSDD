@@ -45,7 +45,7 @@ public class User
 	private String password_hash;
 	private String name;
 	
-	private String TOKEN;
+	private String token;
 	
 	private int visits;
 	
@@ -116,17 +116,17 @@ public class User
 	/**
 	 * @return the TOKEN
 	 */
-	public String getTOKEN()
+	public String getToken()
 	{
-		return TOKEN;
+		return token;
 	}
 
 	/**
 	 * @param tOKEN the tOKEN to set
 	 */
-	public void setTOKEN(String TOKEN)
+	public void setToken(String TOKEN)
 	{
-		this.TOKEN = TOKEN;
+		this.token = TOKEN;
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class User
 		this.email = email;
 		this.password_hash = password_hash;
 		this.name = name;
-		TOKEN = tOKEN;
+		token = tOKEN;
 		this.visits = visits;
 	}
 

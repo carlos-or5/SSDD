@@ -2,6 +2,12 @@
 
 {% block content %}
 <h1 class="title">
-    Welcome, {{current_user.name}}! Email: {{current_user.email.decode()}}
+    Welcome, {{ current_user.name }}! Email: {{ current_user.email }}
 </h1>
+<h2>
+    Visits: {{ current_user.visits }}
+</h2>
+<h2>
+    Your Token is: {{ current_user.token }}
+</h2>
 {% endblock %}
