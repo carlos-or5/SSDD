@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +26,9 @@ import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
 public class SQLVideoDAO implements IVideoDAO {
 
 	Connection conn;
+
+	private static final Logger logger = Logger.getLogger(SQLVideoDAO.class.getName());
+
 
 	@SuppressWarnings("deprecation")
 	public SQLVideoDAO() {
@@ -181,22 +185,16 @@ public class SQLVideoDAO implements IVideoDAO {
 
 	public boolean deleteVideo(String videoid){
 		PreparedStatement stm;
-		IDAOFactory daoFactory;
-		IFaceDAO daoF;
-		daoFactory = new DAOFactoryImpl();
-		daoF = daoFactory.createSQLFaceDAO();
-		boolean facesDeleted = false;
         try{
 			stm = conn.prepareStatement("DELETE from videos WHERE id = ?");
 			stm.setString(1, videoid);
 			stm.executeUpdate();
-			facesDeleted = daoF.deleteFacesFromVideo(videoid);
 		} catch (SQLException e)
 		{
 			// Fallthrough
 		}
 		Optional<Video> v = this.getVideoById(videoid);
-			if(v.isPresent() || !facesDeleted){
+			if(v.isPresent()){
 				return false;
 			}
 			return true;

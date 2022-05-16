@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS videos(
 
 	PRIMARY KEY(id),
 	FOREIGN KEY (userid) REFERENCES users(id)
+	ON DELETE CASCADE
 );
 
 -- Faces
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS faces(
 
 	PRIMARY KEY(id),
 	FOREIGN KEY (videoid) REFERENCES videos(id)
+	ON DELETE CASCADE
 );
 
 
