@@ -121,7 +121,7 @@ def showvideos():
 def showfaces(videoid):
     respuesta = None
     username = current_user.name
-    r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/videos/{videoid}/showFaces")
+    r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/{username}/{videoid}/showFaces")
     respuesta = r.text
     response_json = json.loads(respuesta)
     listafaces = tuple(response_json.items())

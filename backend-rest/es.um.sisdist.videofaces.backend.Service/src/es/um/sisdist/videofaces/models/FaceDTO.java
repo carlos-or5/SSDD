@@ -7,7 +7,7 @@ public class FaceDTO {
 	private String id;
 	private String videoid;
 	private byte[] imagedata;
-	
+
 	public FaceDTO() {
 	}
 
@@ -34,7 +34,7 @@ public class FaceDTO {
 	public void setImagedata(byte[] imagedata) {
 		this.imagedata = imagedata;
 	}
-	
+
 	public FaceDTO(String id, String videoid, byte[] imagedata) {
 		super();
 		this.id = id;

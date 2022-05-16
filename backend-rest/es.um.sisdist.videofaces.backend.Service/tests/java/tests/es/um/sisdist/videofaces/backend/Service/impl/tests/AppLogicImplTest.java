@@ -7,9 +7,8 @@ package es.um.sisdist.videofaces.backend.Service.impl.tests;
  * @author dsevilla
  *
  */
-class AppLogicImplTest
-{
-    // Deshabilitados por ahora ya que necesitan de conexión a BD.
+class AppLogicImplTest {
+	// Deshabilitados por ahora ya que necesitan de conexión a BD.
 //	static AppLogicImpl impl;
 //
 //	@BeforeAll

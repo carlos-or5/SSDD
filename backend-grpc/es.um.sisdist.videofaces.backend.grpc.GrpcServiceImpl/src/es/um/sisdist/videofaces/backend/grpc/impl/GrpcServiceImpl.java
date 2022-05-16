@@ -10,93 +10,72 @@ import es.um.sisdist.videofaces.backend.grpc.VideoAvailability;
 import es.um.sisdist.videofaces.backend.grpc.VideoSpec;
 import io.grpc.stub.StreamObserver;
 
-class GrpcServiceImpl extends GrpcServiceGrpc.GrpcServiceImplBase 
-{
-	//private Logger logger;
-	
-    public GrpcServiceImpl(Logger logger)
-    {
+class GrpcServiceImpl extends GrpcServiceGrpc.GrpcServiceImplBase {
+	// private Logger logger;
+
+	public GrpcServiceImpl(Logger logger) {
 		super();
-		//this.logger = logger;
+		// this.logger = logger;
 	}
 
-    
 	@Override
-	public StreamObserver<VideoSpec> processVideo(StreamObserver<Empty> responseObserver)
-	{
+	public StreamObserver<VideoSpec> processVideo(StreamObserver<Empty> responseObserver) {
 		responseObserver.onNext(Empty.newBuilder().build());
-		
+
 		return new StreamObserver<VideoSpec>() {
 			@Override
 			public void onCompleted() {
 				responseObserver.onCompleted();
 			}
-			
+
 			@Override
 			public void onError(Throwable t) {
 				// TODO
 			}
-			
+
 			@Override
 			public void onNext(VideoSpec vSpec) {
-				new VideoFaces(vSpec.getId()).run();				
+				new VideoFaces(vSpec.getId()).run();
 			}
 		};
 	}
 
 	@Override
-	public void isVideoReady(VideoSpec request, StreamObserver<VideoAvailability> responseObserver)
-	{
+	public void isVideoReady(VideoSpec request, StreamObserver<VideoAvailability> responseObserver) {
 		responseObserver.onNext(VideoAvailability.newBuilder().setAvailable(true).build());
 		responseObserver.onCompleted();
 	}
 
-/*
-	@Override
-	public void storeImage(ImageData request, StreamObserver<Empty> responseObserver)
-    {
-		logger.info("Add image " + request.getId());
-    	imageMap.put(request.getId(),request);
-    	responseObserver.onNext(Empty.newBuilder().build());
-    	responseObserver.onCompleted();
-	}
-
-	@Override
-	public StreamObserver<ImageData> storeImages(StreamObserver<Empty> responseObserver) 
-	{
-		// La respuesta, sólo un objeto Empty
-		responseObserver.onNext(Empty.newBuilder().build());
-
-		// Se retorna un objeto que, al ser llamado en onNext() con cada
-		// elemento enviado por el cliente, reacciona correctamente
-		return new StreamObserver<ImageData>() {
-			@Override
-			public void onCompleted() {
-				// Terminar la respuesta.
-				responseObserver.onCompleted();
-			}
-			@Override
-			public void onError(Throwable arg0) {
-			}
-			@Override
-			public void onNext(ImageData imagedata) 
-			{
-				logger.info("Add image (multiple) " + imagedata.getId());
-		    	imageMap.put(imagedata.getId(), imagedata);	
-			}
-		};
-	}
-
-	@Override
-	public void obtainImage(ImageSpec request, StreamObserver<ImageData> responseObserver) {
-		// TODO Auto-generated method stub
-		super.obtainImage(request, responseObserver);
-	}
-
-	@Override
-	public StreamObserver<ImageSpec> obtainCollage(StreamObserver<ImageData> responseObserver) {
-		// TODO Auto-generated method stub
-		return super.obtainCollage(responseObserver);
-	}
-	*/
+	/*
+	 * @Override public void storeImage(ImageData request, StreamObserver<Empty>
+	 * responseObserver) { logger.info("Add image " + request.getId());
+	 * imageMap.put(request.getId(),request);
+	 * responseObserver.onNext(Empty.newBuilder().build());
+	 * responseObserver.onCompleted(); }
+	 * 
+	 * @Override public StreamObserver<ImageData> storeImages(StreamObserver<Empty>
+	 * responseObserver) { // La respuesta, sólo un objeto Empty
+	 * responseObserver.onNext(Empty.newBuilder().build());
+	 * 
+	 * // Se retorna un objeto que, al ser llamado en onNext() con cada // elemento
+	 * enviado por el cliente, reacciona correctamente return new
+	 * StreamObserver<ImageData>() {
+	 * 
+	 * @Override public void onCompleted() { // Terminar la respuesta.
+	 * responseObserver.onCompleted(); }
+	 * 
+	 * @Override public void onError(Throwable arg0) { }
+	 * 
+	 * @Override public void onNext(ImageData imagedata) {
+	 * logger.info("Add image (multiple) " + imagedata.getId());
+	 * imageMap.put(imagedata.getId(), imagedata); } }; }
+	 * 
+	 * @Override public void obtainImage(ImageSpec request,
+	 * StreamObserver<ImageData> responseObserver) { // TODO Auto-generated method
+	 * stub super.obtainImage(request, responseObserver); }
+	 * 
+	 * @Override public StreamObserver<ImageSpec>
+	 * obtainCollage(StreamObserver<ImageData> responseObserver) { // TODO
+	 * Auto-generated method stub return super.obtainCollage(responseObserver); }
+	 */
 }

@@ -119,23 +119,22 @@ public class SQLVideoDAO implements IVideoDAO {
 
 		} catch (SQLException | FileNotFoundException e) {
 			// Si salta excepcion
-		}	
+		}
 		return Optional.empty();
 	}
-	
-	public void setProcessed(String videoid){
+
+	public void setProcessed(String videoid) {
 		PreparedStatement stm;
-        try{
+		try {
 			stm = conn.prepareStatement("UPDATE videos SET process_status = 1 WHERE id = ?");
 			stm.setString(1, videoid);
 			stm.executeUpdate();
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			// Fallthrough
 		}
 	}
 
-	public List<Optional<Video>> getVideosByUserId(String id){
+	public List<Optional<Video>> getVideosByUserId(String id) {
 		PreparedStatement stm;
 		List<Optional<Video>> listaVideos = new LinkedList<Optional<Video>>();
 		try {

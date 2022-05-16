@@ -14,23 +14,19 @@ import es.um.sisdist.videofaces.backend.dao.video.SQLVideoDAO;
  * @author dsevilla
  *
  */
-public class DAOFactoryImpl implements IDAOFactory
-{
+public class DAOFactoryImpl implements IDAOFactory {
 	@Override
-	public IUserDAO createSQLUserDAO()
-	{
+	public IUserDAO createSQLUserDAO() {
 		return new SQLUserDAO();
 	}
 
 	@Override
-	public IVideoDAO createSQLVideoDAO()
-	{
+	public IVideoDAO createSQLVideoDAO() {
 		return new SQLVideoDAO();
 	}
-	
+
 	@Override
-	public IFaceDAO createSQLFaceDAO()
-	{
+	public IFaceDAO createSQLFaceDAO() {
 		return new SQLFaceDAO();
 	}
 

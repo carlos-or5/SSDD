@@ -27,67 +27,59 @@ import jakarta.ws.rs.core.Response;
  * @author dsevilla
  *
  */
-class MultipartTest
-{
+class MultipartTest {
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @BeforeAll
-    static void setUpBeforeClass() throws Exception
-    {
-    }
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+	}
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @AfterAll
-    static void tearDownAfterClass() throws Exception
-    {
-    }
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
+	}
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @BeforeEach
-    void setUp() throws Exception
-    {
-    }
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeEach
+	void setUp() throws Exception {
+	}
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @AfterEach
-    void tearDown() throws Exception
-    {
-    }
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterEach
+	void tearDown() throws Exception {
+	}
 
-    @Test
-    void testMultipart()
-    {
-        final Client client = ClientBuilder.newBuilder().register(MultiPartFeature.class).build();
+	@Test
+	void testMultipart() {
+		final Client client = ClientBuilder.newBuilder().register(MultiPartFeature.class).build();
 
-        final FileDataBodyPart filePart = new FileDataBodyPart("file", new File("Dockerfile"));
-        FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
-        final FormDataMultiPart multipart = (FormDataMultiPart) formDataMultiPart.field("foo", "bar")
-                .bodyPart(filePart);
+		final FileDataBodyPart filePart = new FileDataBodyPart("file", new File("Dockerfile"));
+		FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
+		final FormDataMultiPart multipart = (FormDataMultiPart) formDataMultiPart.field("foo", "bar")
+				.bodyPart(filePart);
 
-        final WebTarget target = client.target("http://localhost:8080/Service/uploadVideo");
-        final Response response = target.request().post(Entity.entity(multipart, multipart.getMediaType()));
+		final WebTarget target = client.target("http://localhost:8080/Service/uploadVideo");
+		final Response response = target.request().post(Entity.entity(multipart, multipart.getMediaType()));
 
-        System.err.println(response);
+		System.err.println(response);
 
-        // Use response object to verify upload success
+		// Use response object to verify upload success
 
-        try
-        {
-            formDataMultiPart.close();
-            multipart.close();
-        } catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            fail("Exception " + e);
-        }
-    }
+		try {
+			formDataMultiPart.close();
+			multipart.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Exception " + e);
+		}
+	}
 }

@@ -17,19 +17,17 @@ import jakarta.ws.rs.core.Response.Status;
 // POJO, no interface no extends
 
 @Path("/checkLogin")
-public class CheckLoginEndpoint
-{
-    private AppLogicImpl impl = AppLogicImpl.getInstance();
+public class CheckLoginEndpoint {
+	private AppLogicImpl impl = AppLogicImpl.getInstance();
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response checkUser(UserDTO uo)
-    {
-        Optional<User> u = impl.checkLogin(uo.getEmail(), uo.getPassword());
-        if (u.isPresent())
-            return Response.ok(UserDTOUtils.toDTO(u.get())).build();
-        else
-            return Response.status(Status.FORBIDDEN).build();
-    }
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response checkUser(UserDTO uo) {
+		Optional<User> u = impl.checkLogin(uo.getEmail(), uo.getPassword());
+		if (u.isPresent())
+			return Response.ok(UserDTOUtils.toDTO(u.get())).build();
+		else
+			return Response.status(Status.FORBIDDEN).build();
+	}
 }

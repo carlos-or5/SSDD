@@ -3,6 +3,7 @@
  */
 package es.um.sisdist.videofaces.backend.Service.impl;
 
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -42,6 +43,8 @@ public class AppLogicImpl {
 	IFaceDAO daoF;
 
 	private static final Logger logger = Logger.getLogger(AppLogicImpl.class.getName());
+
+	private static final int RANDOM_TOKEN_LEN = 12;
 
 	private final ManagedChannel channel;
 	private final GrpcServiceGrpc.GrpcServiceBlockingStub blockingStub;
@@ -114,7 +117,7 @@ public class AppLogicImpl {
 		Optional<User> u = dao.getUserByEmail(email);
 		Optional<User> u2 = dao.getUserByName(name);
 
-		// Si el email a registrar esta creado, entonces devolver error
+		// Si el email a registrar esta creado, o el nombre, entonces devolver error
 		if (u.isPresent() || u2.isPresent()) {
 			// String hashed_pass = User.md5pass(pass);
 			// if (0 == hashed_pass.compareTo(u.get().getPassword_hash()))
@@ -123,8 +126,9 @@ public class AppLogicImpl {
 		}
 
 		// Si no hay email registrado en la base de datos, entonces registramos
+		String token = getRandomString(RANDOM_TOKEN_LEN);
 
-		u = dao.register(email, name, pass);
+		u = dao.register(email, name, pass, token);
 
 		return u;
 	}
@@ -184,37 +188,50 @@ public class AppLogicImpl {
 
 	}
 
-    public Map<String, String> getVideos(String username) {
-    	Optional<User> u = dao.getUserByName(username);
-    	HashMap<String, String> mapVideos = new HashMap<String, String>();
-    	// Si existe el usuario
-    	if (u.isPresent()){
-    		User usuario = u.get();
-    		String id = usuario.getId();
-    		List<Optional<Video>> listaVideos = daoV.getVideosByUserId(id);
-    		for (Optional<Video> video : listaVideos){
-    			if(video.isPresent()) {
-    				Video v = video.get();
-    				String videoId = v.getId();
-    				String filename = v.getFilename();
-    				mapVideos.put(videoId, filename);
-    			}
-    		}
-    	}
-    	return Collections.unmodifiableMap(mapVideos);
-		
-    }
+	public Map<String, String> getVideos(String username) {
+		Optional<User> u = dao.getUserByName(username);
+		HashMap<String, String> mapVideos = new HashMap<String, String>();
+		// Si existe el usuario
+		if (u.isPresent()) {
+			User usuario = u.get();
+			String id = usuario.getId();
+			List<Optional<Video>> listaVideos = daoV.getVideosByUserId(id);
+			for (Optional<Video> video : listaVideos) {
+				if (video.isPresent()) {
+					Video v = video.get();
+					String videoId = v.getId();
+					String filename = v.getFilename();
+					mapVideos.put(videoId, filename);
+				}
+			}
+		}
+		return Collections.unmodifiableMap(mapVideos);
 
-	public Map<String, byte[]> getFacesOfVideo(String videoid) {		
+	}
+
+	public Map<String, byte[]> getFacesOfVideo(String videoid) {
 		List<Optional<Face>> faces = daoF.getFaceByVideoId(videoid);
 		HashMap<String, byte[]> resul = new HashMap<String, byte[]>();
-		
+
 		for (Optional<Face> face : faces) {
 			if (face.isPresent()) {
 				resul.put(face.get().getId(), face.get().getImagedata());
 			}
 		}
-		
+
 		return Collections.unmodifiableMap(resul);
+	}
+
+	private static String getRandomString(int len) {
+		SecureRandom secureRandom = new SecureRandom();
+
+		String CHARACTER_SET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+		StringBuffer buff = new StringBuffer(len);
+		for (int i = 0; i < len; i++) {
+			int offset = secureRandom.nextInt(CHARACTER_SET.length());
+			buff.append(CHARACTER_SET.substring(offset, offset + 1));
+		}
+		return buff.toString();
 	}
 }

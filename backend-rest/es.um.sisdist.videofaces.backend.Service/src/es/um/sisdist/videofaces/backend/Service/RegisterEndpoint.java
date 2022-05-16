@@ -17,20 +17,18 @@ import jakarta.ws.rs.core.Response.Status;
 // POJO, no interface no extends
 
 @Path("/register")
-public class RegisterEndpoint
-{
-    private AppLogicImpl impl = AppLogicImpl.getInstance();
+public class RegisterEndpoint {
+	private AppLogicImpl impl = AppLogicImpl.getInstance();
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response registerUser(UserDTO uo)
-    {
-        // Llamar a implementacion con el metodo registrar
-        Optional<User> u = impl.register(uo.getEmail(), uo.getName(), uo.getPassword());
-        if (u.isPresent())
-            return Response.ok(UserDTOUtils.toDTO(u.get())).build();
-        else
-            return Response.status(Status.FORBIDDEN).build();
-    }
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registerUser(UserDTO uo) {
+		// Llamar a implementacion con el metodo registrar
+		Optional<User> u = impl.register(uo.getEmail(), uo.getName(), uo.getPassword());
+		if (u.isPresent())
+			return Response.ok(UserDTOUtils.toDTO(u.get())).build();
+		else
+			return Response.status(Status.FORBIDDEN).build();
+	}
 }

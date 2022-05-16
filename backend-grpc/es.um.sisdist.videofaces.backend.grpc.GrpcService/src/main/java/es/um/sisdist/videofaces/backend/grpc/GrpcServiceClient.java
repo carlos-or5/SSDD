@@ -47,101 +47,63 @@ import com.google.protobuf.Empty;
 /**
  * A simple client that requests a greeting from the {@link CollageServer}.
  */
-public class GrpcServiceClient 
-{
+public class GrpcServiceClient {
 	/*
-  private static final Logger logger = Logger.getLogger(GrpcServiceClient.class.getName());
-
-  private final ManagedChannel channel;
-  private final GrpcServiceGrpc.GrpcServiceBlockingStub blockingStub;
-  private final GrpcServiceGrpc.GrpcServiceStub asyncStub;
-  
-  // Construct client connecting to HelloWorld server at {@code host:port}. 
-  public GrpcServiceClient(String host, int port) 
-  {
-    channel = ManagedChannelBuilder.forAddress(host, port)
-        // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
-        // needing certificates.
-        .usePlaintext()
-        .build();
-    blockingStub = GrpcServiceGrpc.newBlockingStub(channel);
-    asyncStub = GrpcServiceGrpc.newStub(channel);
-  }
-
-  public void shutdown() throws InterruptedException {
-    channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-  }
-  
-  // Send images. 
-  public void sendImagesAndGetCollage()
-  {
-	  // Imágenes para enviar
-	  ImageData image1 = ImageData.newBuilder().setId("imagen1")
-			  .setData(ByteString.copyFrom("Imagen 1 data".getBytes())).build();	  
-	  ImageData image2 = ImageData.newBuilder().setId("imagen2")
-			  .setData(ByteString.copyFrom("Imagen 2 data".getBytes())).build();
-	  
-	  try {
-		  blockingStub.storeImage(image1);		  
-		  blockingStub.storeImage(image2);
-	  } catch (StatusRuntimeException e) {
-		  logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-		  return;
-	  }
-
-	  // Stream
-	  try {
-		  final CountDownLatch finishLatch = new CountDownLatch(1);
-		  
-		  StreamObserver<Empty> soEmpty = new StreamObserver<Empty>() {
-
-			  @Override
-			  public void onNext(Empty value) {
-			  }
-
-			  @Override
-			  public void onError(Throwable t) {
-				  finishLatch.countDown();
-			  }
-
-			  @Override
-			  public void onCompleted() {
-				  finishLatch.countDown();
-			  }
-		  };
-		  
-		  StreamObserver<ImageData> so = asyncStub.storeImages(soEmpty);
-		  so.onNext(image1);
-		  so.onNext(image2);
-		  so.onCompleted();
-		  
-		  // Esperar la respuesta
-		  if (finishLatch.await(1, TimeUnit.SECONDS))
-			  logger.info("Received response.");
-		  else
-			  logger.info("Not received response!");
-		  
-	  } catch (StatusRuntimeException e) {
-		  logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-		  return;
-	  } catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-
-  }
-
-  // * Collage client
-  public static void main(String[] args) throws Exception {
-    GrpcServiceClient client = 
-      new GrpcServiceClient(args.length == 0 ? "localhost" : args[0],
-                        50051);
-    try {
-      // Access a service running on the local machine on port 50051 
-      client.sendImagesAndGetCollage();
-    } finally {
-      client.shutdown();
-    }
-  }
-  */
+	 * private static final Logger logger =
+	 * Logger.getLogger(GrpcServiceClient.class.getName());
+	 * 
+	 * private final ManagedChannel channel; private final
+	 * GrpcServiceGrpc.GrpcServiceBlockingStub blockingStub; private final
+	 * GrpcServiceGrpc.GrpcServiceStub asyncStub;
+	 * 
+	 * // Construct client connecting to HelloWorld server at {@code host:port}.
+	 * public GrpcServiceClient(String host, int port) { channel =
+	 * ManagedChannelBuilder.forAddress(host, port) // Channels are secure by
+	 * default (via SSL/TLS). For the example we disable TLS to avoid // needing
+	 * certificates. .usePlaintext() .build(); blockingStub =
+	 * GrpcServiceGrpc.newBlockingStub(channel); asyncStub =
+	 * GrpcServiceGrpc.newStub(channel); }
+	 * 
+	 * public void shutdown() throws InterruptedException {
+	 * channel.shutdown().awaitTermination(5, TimeUnit.SECONDS); }
+	 * 
+	 * // Send images. public void sendImagesAndGetCollage() { // Imágenes para
+	 * enviar ImageData image1 = ImageData.newBuilder().setId("imagen1")
+	 * .setData(ByteString.copyFrom("Imagen 1 data".getBytes())).build(); ImageData
+	 * image2 = ImageData.newBuilder().setId("imagen2")
+	 * .setData(ByteString.copyFrom("Imagen 2 data".getBytes())).build();
+	 * 
+	 * try { blockingStub.storeImage(image1); blockingStub.storeImage(image2); }
+	 * catch (StatusRuntimeException e) { logger.log(Level.WARNING,
+	 * "RPC failed: {0}", e.getStatus()); return; }
+	 * 
+	 * // Stream try { final CountDownLatch finishLatch = new CountDownLatch(1);
+	 * 
+	 * StreamObserver<Empty> soEmpty = new StreamObserver<Empty>() {
+	 * 
+	 * @Override public void onNext(Empty value) { }
+	 * 
+	 * @Override public void onError(Throwable t) { finishLatch.countDown(); }
+	 * 
+	 * @Override public void onCompleted() { finishLatch.countDown(); } };
+	 * 
+	 * StreamObserver<ImageData> so = asyncStub.storeImages(soEmpty);
+	 * so.onNext(image1); so.onNext(image2); so.onCompleted();
+	 * 
+	 * // Esperar la respuesta if (finishLatch.await(1, TimeUnit.SECONDS))
+	 * logger.info("Received response."); else
+	 * logger.info("Not received response!");
+	 * 
+	 * } catch (StatusRuntimeException e) { logger.log(Level.WARNING,
+	 * "RPC failed: {0}", e.getStatus()); return; } catch (InterruptedException e) {
+	 * // TODO Auto-generated catch block e.printStackTrace(); }
+	 * 
+	 * }
+	 * 
+	 * // * Collage client public static void main(String[] args) throws Exception {
+	 * GrpcServiceClient client = new GrpcServiceClient(args.length == 0 ?
+	 * "localhost" : args[0], 50051); try { // Access a service running on the local
+	 * machine on port 50051 client.sendImagesAndGetCollage(); } finally {
+	 * client.shutdown(); } }
+	 */
 }
