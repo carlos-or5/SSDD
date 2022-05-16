@@ -129,6 +129,17 @@ def showfaces(videoid):
         respuesta = 'No existen caras para este video.'
     return render_template('showfacestable.html', listafaces = listafaces)    
 
+@app.route("/deletevideo/<videoid>", methods=['GET'])
+@login_required
+def deletevideo(videoid):
+    respuesta = None
+    username = current_user.name
+    r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/videos/{videoid}/deleteVideo")
+    if r.status_code != 200:
+        respuesta = 'No se ha podido borrar el video.'
+    
+    return redirect(url_for('showvideos'))
+
 @app.route('/logout')
 @login_required
 def logout():

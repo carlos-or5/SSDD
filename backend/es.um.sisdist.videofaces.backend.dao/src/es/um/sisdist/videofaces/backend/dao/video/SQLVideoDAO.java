@@ -15,6 +15,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import es.um.sisdist.videofaces.backend.dao.DAOFactoryImpl;
+import es.um.sisdist.videofaces.backend.dao.IDAOFactory;
+import es.um.sisdist.videofaces.backend.dao.face.IFaceDAO;
 import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
@@ -176,4 +179,27 @@ public class SQLVideoDAO implements IVideoDAO {
 		}
 	}
 
+	public boolean deleteVideo(String videoid){
+		PreparedStatement stm;
+		IDAOFactory daoFactory;
+		IFaceDAO daoF;
+		daoFactory = new DAOFactoryImpl();
+		daoF = daoFactory.createSQLFaceDAO();
+		boolean facesDeleted = false;
+        try{
+			stm = conn.prepareStatement("DELETE from videos WHERE id = ?");
+			stm.setString(1, videoid);
+			stm.executeUpdate();
+			facesDeleted = daoF.deleteFacesFromVideo(videoid);
+		} catch (SQLException e)
+		{
+			// Fallthrough
+		}
+		Optional<Video> v = this.getVideoById(videoid);
+			if(v.isPresent() || !facesDeleted){
+				return false;
+			}
+			return true;
+		}
+	
 }

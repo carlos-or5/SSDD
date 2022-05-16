@@ -24,6 +24,9 @@ table, th, td {
   <tr>
     <td><a href="{{ url_for('showfaces', videoid=videoid) }}">{{ videoid }}</a></td>
     <td>{{ filename }}</td>
+    <a href="{{ url_for('deletevideo', videoid=videoid) }}">
+      <input type="image" src="/static/eliminar.png" width="300" height="200"/>
+   </a>
   </tr>
   {% endfor %}
   <tr>

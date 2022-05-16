@@ -221,6 +221,11 @@ public class AppLogicImpl {
 
 		return Collections.unmodifiableMap(resul);
 	}
+    
+	public boolean deleteVideo(String videoid){
+		boolean resul = daoV.deleteVideo(videoid);
+		return resul;
+	}
 
 	private static String getRandomString(int len) {
 		SecureRandom secureRandom = new SecureRandom();

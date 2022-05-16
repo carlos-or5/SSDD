@@ -15,4 +15,6 @@ public interface IFaceDAO {
 	public Optional<Face> storeFace(String videoid, String path);
 
 	public List<Optional<Face>> getFaceByVideoId(String videoid);
+
+	public boolean deleteFacesFromVideo(String videoid);
 }
