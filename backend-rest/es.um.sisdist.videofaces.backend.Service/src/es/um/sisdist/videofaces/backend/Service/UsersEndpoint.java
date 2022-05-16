@@ -122,5 +122,17 @@ public class UsersEndpoint {
 		return Response.ok(stringMapa).build();
 
 	}
+	
+	@GET
+    @Path("/{username}/{videoid}/deleteVideo")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteVideo(@PathParam("videoid") String videoid)
+    {
+        boolean resultado = impl.deleteVideo(videoid);
+        if (resultado)
+            return Response.ok().build();
+        else
+            return Response.status(Status.FORBIDDEN).build();
+    }
 
 }

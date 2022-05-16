@@ -134,7 +134,7 @@ def showfaces(videoid):
 def deletevideo(videoid):
     respuesta = None
     username = current_user.name
-    r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/videos/{videoid}/deleteVideo")
+    r = requests.get(f"http://{os.environ['BACKEND_REST']}:8080/rest/videos/{username}/{videoid}/deleteVideo")
     if r.status_code != 200:
         respuesta = 'No se ha podido borrar el video.'
     
