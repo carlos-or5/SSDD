@@ -29,7 +29,6 @@ public class SQLVideoDAO implements IVideoDAO {
 
 	private static final Logger logger = Logger.getLogger(SQLVideoDAO.class.getName());
 
-
 	@SuppressWarnings("deprecation")
 	public SQLVideoDAO() {
 		try {
@@ -183,21 +182,20 @@ public class SQLVideoDAO implements IVideoDAO {
 		}
 	}
 
-	public boolean deleteVideo(String videoid){
+	public boolean deleteVideo(String videoid) {
 		PreparedStatement stm;
-        try{
+		try {
 			stm = conn.prepareStatement("DELETE from videos WHERE id = ?");
 			stm.setString(1, videoid);
 			stm.executeUpdate();
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			// Fallthrough
 		}
 		Optional<Video> v = this.getVideoById(videoid);
-			if(v.isPresent()){
-				return false;
-			}
-			return true;
+		if (v.isPresent()) {
+			return false;
 		}
-	
+		return true;
+	}
+
 }

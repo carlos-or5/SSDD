@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 // POJO, no interface no extends
@@ -62,7 +63,7 @@ public class UsersEndpoint {
 		// lugar a un Arbitrary File Upload
 		// https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload
 		// Comprobamos si el nombre del fichero no provoca que nos salgamos de /tmp/
-		java.nio.file.Path root = java.nio.file.Paths.get("/tmp/");
+		java.nio.file.Path root = Paths.get("/tmp/");
 		String path = "/tmp/" + fileMetaData.getFileName();
 		java.nio.file.Path subpath = root.normalize().resolve(path).normalize();
 
@@ -72,7 +73,7 @@ public class UsersEndpoint {
 
 		File targetFile = new File(path);
 
-		java.nio.file.Files.copy(fileInputStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(fileInputStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		fileInputStream.close();
 		Optional<Video> v = impl.storeVideo(username, fileMetaData.getFileName());
 		Video video = v.get();
@@ -122,28 +123,26 @@ public class UsersEndpoint {
 		return Response.ok(stringMapa).build();
 
 	}
-	
-	@GET
-    @Path("/{username}/{videoid}/deleteVideo")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteVideo(@PathParam("videoid") String videoid)
-    {
-        boolean resultado = impl.deleteVideo(videoid);
-        if (resultado)
-            return Response.ok().build();
-        else
-            return Response.status(Status.FORBIDDEN).build();
-    }
 
 	@GET
-    @Path("/{username}/{faceid}/deleteFace")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteFace(@PathParam("faceid") String faceid)
-    {
-        boolean resultado = impl.deleteFace(faceid);
-        if (resultado)
-            return Response.ok().build();
-        else
-            return Response.status(Status.FORBIDDEN).build();
-    }
+	@Path("/{username}/{videoid}/deleteVideo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteVideo(@PathParam("videoid") String videoid) {
+		boolean resultado = impl.deleteVideo(videoid);
+		if (resultado)
+			return Response.ok().build();
+		else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@GET
+	@Path("/{username}/{faceid}/deleteFace")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteFace(@PathParam("faceid") String faceid) {
+		boolean resultado = impl.deleteFace(faceid);
+		if (resultado)
+			return Response.ok().build();
+		else
+			return Response.status(Status.FORBIDDEN).build();
+	}
 }

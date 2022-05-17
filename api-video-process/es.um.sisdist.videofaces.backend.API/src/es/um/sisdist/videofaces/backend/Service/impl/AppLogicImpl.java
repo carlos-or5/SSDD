@@ -3,7 +3,6 @@
  */
 package es.um.sisdist.videofaces.backend.Service.impl;
 
-import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -26,7 +25,6 @@ import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.backend.dao.user.IUserDAO;
 import es.um.sisdist.videofaces.backend.dao.video.IVideoDAO;
 import es.um.sisdist.videofaces.backend.grpc.GrpcServiceGrpc;
-import es.um.sisdist.videofaces.backend.grpc.VideoAvailability;
 import es.um.sisdist.videofaces.backend.grpc.VideoSpec;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -44,10 +42,7 @@ public class AppLogicImpl {
 
 	private static final Logger logger = Logger.getLogger(AppLogicImpl.class.getName());
 
-	private static final int RANDOM_TOKEN_LEN = 12;
-
 	private final ManagedChannel channel;
-	private final GrpcServiceGrpc.GrpcServiceBlockingStub blockingStub;
 	private final GrpcServiceGrpc.GrpcServiceStub asyncStub;
 
 	static AppLogicImpl instance = new AppLogicImpl();
@@ -67,7 +62,6 @@ public class AppLogicImpl {
 				// to avoid
 				// needing certificates.
 				.usePlaintext().build();
-		blockingStub = GrpcServiceGrpc.newBlockingStub(channel);
 		asyncStub = GrpcServiceGrpc.newStub(channel);
 	}
 
@@ -75,63 +69,8 @@ public class AppLogicImpl {
 		return instance;
 	}
 
-	public Optional<User> getUserByEmail(String userId) {
-		Optional<User> u = dao.getUserByEmail(userId);
-		return u;
-	}
-
 	public Optional<User> getUserById(String userId) {
 		return dao.getUserById(userId);
-	}
-
-	public boolean isVideoReady(String videoId) {
-		// Test de grpc, puede hacerse con la BD
-		VideoAvailability available = blockingStub.isVideoReady(VideoSpec.newBuilder().setId(videoId).build());
-		return available.getAvailable();
-	}
-
-	// El frontend, a través del formulario de login,
-	// envía el usuario y pass, que se convierte a un DTO. De ahí
-	// obtenemos la consulta a la base de datos, que nos retornará,
-	// si procede,
-	public Optional<User> checkLogin(String email, String pass) {
-		Optional<User> u = dao.getUserByEmail(email);
-
-		if (u.isPresent()) {
-			String hashed_pass = User.md5pass(pass);
-			if (0 == hashed_pass.compareTo(u.get().getPassword_hash())) {
-				dao.incrementsVisits(email);
-				u = dao.getUserByEmail(email);
-				return u;
-			}
-		}
-
-		return Optional.empty();
-	}
-
-	public Optional<User> register(String email, String name, String pass) {
-
-		if (email.isEmpty() || name.isEmpty() || pass.isEmpty()) {
-			return Optional.empty();
-		}
-
-		Optional<User> u = dao.getUserByEmail(email);
-		Optional<User> u2 = dao.getUserByName(name);
-
-		// Si el email a registrar esta creado, o el nombre, entonces devolver error
-		if (u.isPresent() || u2.isPresent()) {
-			// String hashed_pass = User.md5pass(pass);
-			// if (0 == hashed_pass.compareTo(u.get().getPassword_hash()))
-			// return u;
-			return Optional.empty();
-		}
-
-		// Si no hay email registrado en la base de datos, entonces registramos
-		String token = getRandomString(RANDOM_TOKEN_LEN);
-
-		u = dao.register(email, name, pass, token);
-
-		return u;
 	}
 
 	public Optional<Video> storeVideo(String username, String filename) {
@@ -189,25 +128,13 @@ public class AppLogicImpl {
 
 	}
 
-	public Map<String, String> getVideos(String username) {
-		Optional<User> u = dao.getUserByName(username);
-		HashMap<String, String> mapVideos = new HashMap<String, String>();
+	public Optional<Video> getVideoById(String videoID) {
+		Optional<Video> v = daoV.getVideoById(videoID);
 		// Si existe el usuario
-		if (u.isPresent()) {
-			User usuario = u.get();
-			String id = usuario.getId();
-			List<Optional<Video>> listaVideos = daoV.getVideosByUserId(id);
-			for (Optional<Video> video : listaVideos) {
-				if (video.isPresent()) {
-					Video v = video.get();
-					String videoId = v.getId();
-					String filename = v.getFilename();
-					mapVideos.put(videoId, filename);
-				}
-			}
+		if (v.isPresent()) {
+			v.get();
 		}
-		return Collections.unmodifiableMap(mapVideos);
-
+		return Optional.empty();
 	}
 
 	public Map<String, byte[]> getFacesOfVideo(String videoid) {
@@ -222,28 +149,5 @@ public class AppLogicImpl {
 
 		return Collections.unmodifiableMap(resul);
 	}
-
-	public boolean deleteVideo(String videoid) {
-		boolean resul = daoV.deleteVideo(videoid);
-		return resul;
-	}
-
-	public boolean deleteFace(String faceid) {
-		boolean resul = daoF.deleteFace(faceid);
-		return resul;
-	}
-
-	private static String getRandomString(int len) {
-		SecureRandom secureRandom = new SecureRandom();
-
-		char CHARACTER_SET[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
-
-		StringBuffer buff = new StringBuffer(len);
-		for (int i = 0; i < len; i++) {
-			int offset = secureRandom.nextInt(CHARACTER_SET.length);
-			buff.append(CHARACTER_SET[offset]);
-		}
-		return buff.toString();
-	}
-
+	
 }

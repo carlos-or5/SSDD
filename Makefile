@@ -1,5 +1,5 @@
 #! /usr/bin/env make -f
-SUBDIRS = frontend backend backend-grpc backend-rest
+SUBDIRS = frontend backend backend-grpc backend-rest api-video-process
 
 all: $(SUBDIRS)
 
@@ -26,9 +26,12 @@ backend-grpc:
 backend-rest:
 	$(MAKE) -C $@
 
+api-video-process:
+	$(MAKE) -C $@
+
 clean:
 	for i in $(SUBDIRS); do \
 		$(MAKE) -C $$i $@; \
 	done
 
-.PHONY: all run-devel clear-devel containers frontend backend backend-grpc backend-rest clean
+.PHONY: all run-devel clear-devel containers frontend backend backend-grpc backend-rest api-video-process clean
