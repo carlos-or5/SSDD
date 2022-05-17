@@ -101,6 +101,7 @@ public class AppLogicImpl {
 			String hashed_pass = User.md5pass(pass);
 			if (0 == hashed_pass.compareTo(u.get().getPassword_hash())) {
 				dao.incrementsVisits(email);
+				u = dao.getUserByEmail(email);
 				return u;
 			}
 		}

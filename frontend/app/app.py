@@ -49,7 +49,7 @@ def login():
                 response_json = json.loads(r.text)
                 user = User(response_json.get("id"), response_json.get("name"), response_json.get("email"),
                             form.password.data.encode('utf-8'), response_json.get("visits"), response_json.get("token"))
-                users.append(user)
+                users.insert(0, user)
                 login_user(user, remember=form.remember_me.data)
                 return redirect(url_for('index'))
 
@@ -68,7 +68,7 @@ def register():
             data = json.dumps(data)
             r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/register", headers=headers, data=data)
             if r.status_code != 200:
-                error = 'Email already registered.'
+                error = 'Email or name already registered.'
             #if form.email.data != 'admin@um.es' or form.password.data != 'admin':
             #    error = 'Invalid Credentials. Please try again.'
             else:
