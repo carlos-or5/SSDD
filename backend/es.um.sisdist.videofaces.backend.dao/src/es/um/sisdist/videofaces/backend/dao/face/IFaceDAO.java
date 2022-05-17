@@ -16,4 +16,6 @@ public interface IFaceDAO {
 
 	public List<Optional<Face>> getFaceByVideoId(String videoid);
 
+	public boolean deleteFace(String faceid);
+
 }

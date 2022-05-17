@@ -227,6 +227,11 @@ public class AppLogicImpl {
 		return resul;
 	}
 
+	public boolean deleteFace(String faceid){
+		boolean resul = daoF.deleteFace(faceid);
+		return resul;
+	}
+
 	private static String getRandomString(int len) {
 		SecureRandom secureRandom = new SecureRandom();
 
@@ -239,4 +244,5 @@ public class AppLogicImpl {
 		}
 		return buff.toString();
 	}
+
 }

@@ -127,4 +127,21 @@ public class SQLFaceDAO implements IFaceDAO {
 		}
 	}
 
+	public boolean deleteFace(String faceid){
+		PreparedStatement stm;
+        try{
+			stm = conn.prepareStatement("DELETE from faces WHERE id = ?");
+			stm.setString(1, faceid);
+			stm.executeUpdate();
+		} catch (SQLException e)
+		{
+			// Fallthrough
+		}
+		Optional<Face> f = this.getFaceById(faceid);
+			if(f.isPresent()){
+				return false;
+			}
+			return true;
+		}
+
 }

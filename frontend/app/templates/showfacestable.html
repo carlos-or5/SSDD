@@ -10,12 +10,13 @@ table, th, td {
 </style>
 <body>
 
-<h2>Table with processed faces</h2>
+<h2>Table with processed faces of video: {{videoid}}</h2>
 
 <table class="table table-dark" style="width:100%">
   <tr>
     <th>Face ID</th>
     <th>Face</th>
+    <th>Eliminar</th>
   </tr>
 
   <!-- Para cada face faceid, face anadir una columna a la tabla -->
@@ -24,6 +25,7 @@ table, th, td {
   <tr>
     <td>{{ faceid }}</a></td>
     <td><img src="data:image/png;base64, {{ face }}" alt="Face" /></td>
+    <td><a href="{{ url_for('deleteface', videoid=videoid, faceid=faceid)}}"><img src="/static/eliminar.png" width="45" height="30"/></a></td>
   </tr>
   {% endfor %}
   <tr>

@@ -135,4 +135,15 @@ public class UsersEndpoint {
             return Response.status(Status.FORBIDDEN).build();
     }
 
+	@GET
+    @Path("/{username}/{faceid}/deleteFace")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteFace(@PathParam("faceid") String faceid)
+    {
+        boolean resultado = impl.deleteFace(faceid);
+        if (resultado)
+            return Response.ok().build();
+        else
+            return Response.status(Status.FORBIDDEN).build();
+    }
 }
