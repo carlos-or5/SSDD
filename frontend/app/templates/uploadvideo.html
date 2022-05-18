@@ -16,4 +16,7 @@
     <p class="error"><strong>Fichero subido con exito:</strong> {{ respuesta }}</p>
     <p class="error"><strong>El video estará disponible en "My Videos" cuando se procese</strong></p>
 {% endif %}
+{% if idVideo %}
+    <p class="error"><strong>El Id del Video es:</strong> {{ idVideo }}</p>
+{% endif %}
 {% endblock %}

@@ -11,6 +11,7 @@ import es.um.sisdist.videofaces.backend.Service.impl.AppLogicImpl;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.models.UserDTO;
 import es.um.sisdist.videofaces.models.UserDTOUtils;
+import es.um.sisdist.videofaces.models.VideoDTOUtils;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -83,7 +84,7 @@ public class UsersEndpoint {
 
 		logger.info("El id del video subido es: " + video.getId());
 
-		return Response.ok(fileMetaData.getFileName()).build();
+		return Response.ok(VideoDTOUtils.toDTO(video)).build();
 	}
 
 	@GET
@@ -125,6 +126,19 @@ public class UsersEndpoint {
 		// Devolver el hahsmap
 		return Response.ok(stringMapa).build();
 
+	}
+
+	@GET
+	@Path("/{username}/{videoid}/checkStatus")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response checkStatusVideo(@PathParam("videoid") String videoid) {
+		boolean procesado = impl.checkStatus(videoid);
+		// Si se ha procesado devolver 200 OK
+		if (procesado)
+			return Response.ok().build();
+		// Si no, devolver que se esta procesando
+		else
+			return Response.status(Status.NO_CONTENT).build();
 	}
 
 	@GET

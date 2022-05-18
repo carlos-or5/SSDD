@@ -90,15 +90,20 @@ def profile():
 @login_required
 def uploadvideo():
     respuesta = None
+    idVideo = None
     if request.method == 'POST':
         f = request.files['file']
         files = {'file':(f.filename, f)}
         username = current_user.name
         r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/{username}/uploadVideo", files=files)
-        respuesta = r.text
+        if r.status_code == 200:
+            response_json = json.loads(r.text)
+            filename = response_json.get("filename")
+            idVideo = response_json.get("id")
+            respuesta = filename
         if r.status_code != 200:
                 respuesta = 'Video en blanco o video repetido. Inserta un video nuevo.'
-        return render_template('uploadvideo.html', respuesta = respuesta)
+        return render_template('uploadvideo.html', respuesta = respuesta, idVideo = idVideo)
 
     else:
         return render_template('uploadvideo.html')

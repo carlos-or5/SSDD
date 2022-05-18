@@ -23,6 +23,7 @@ import es.um.sisdist.videofaces.backend.dao.face.IFaceDAO;
 import es.um.sisdist.videofaces.backend.dao.models.Face;
 import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
+import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
 import es.um.sisdist.videofaces.backend.dao.user.IUserDAO;
 import es.um.sisdist.videofaces.backend.dao.video.IVideoDAO;
 import es.um.sisdist.videofaces.backend.grpc.GrpcServiceGrpc;
@@ -233,6 +234,16 @@ public class AppLogicImpl {
 		}
 
 		return Collections.unmodifiableMap(resul);
+	}
+
+	public boolean checkStatus(String videoid) {
+		PROCESS_STATUS resul = daoV.getVideoStatus(videoid);
+		if (resul == PROCESS_STATUS.PROCESSED){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public boolean deleteVideo(String videoid) {
