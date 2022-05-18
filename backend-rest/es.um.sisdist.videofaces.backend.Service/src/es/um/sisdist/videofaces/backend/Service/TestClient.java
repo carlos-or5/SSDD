@@ -70,6 +70,10 @@ public class TestClient {
         
         System.out.println("[" + statusCode + "] " + responseString);
         
+        // Test checkeo de videos
+        
+        
+        
 		//Response uploadVideo = service.path("users").path(username).path("uploadVideo").request(MediaType.APPLICATION_JSON_TYPE)
 				//.post(Entity.json(jsonVideo));
 		

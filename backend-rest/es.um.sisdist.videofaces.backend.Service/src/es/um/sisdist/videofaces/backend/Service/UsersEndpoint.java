@@ -50,7 +50,7 @@ public class UsersEndpoint {
 	@POST
 	@Path("/{username}/uploadVideo")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)	
 	public Response uploadVideo(@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData, @PathParam("username") String username)
 			throws Exception {
@@ -76,6 +76,9 @@ public class UsersEndpoint {
 		Files.copy(fileInputStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		fileInputStream.close();
 		Optional<Video> v = impl.storeVideo(username, fileMetaData.getFileName());
+		if (!v.isPresent()){
+			return Response.status(Status.FORBIDDEN).build();
+		}
 		Video video = v.get();
 
 		logger.info("El id del video subido es: " + video.getId());

@@ -63,6 +63,21 @@ public class SQLVideoDAO implements IVideoDAO {
 		return Optional.empty();
 	}
 
+	public Optional<Video> getVideoByFilename(String userId, String filename){
+		PreparedStatement stm;
+		try {
+			stm = conn.prepareStatement("SELECT * from videos WHERE filename = ? AND userid = ?");
+			stm.setString(1, filename);
+			stm.setString(2, userId);
+			ResultSet result = stm.executeQuery();
+			if (result.next())
+				return createVideo(result);
+		} catch (SQLException e) {
+			// Fallthrough
+		}
+		return Optional.empty();
+	}
+
 	@Override
 	public InputStream getStreamForVideo(String id) {
 		PreparedStatement stm;
@@ -157,6 +172,7 @@ public class SQLVideoDAO implements IVideoDAO {
 		return listaVideos;
 
 	}
+
 
 	private Optional<Video> createVideo(ResultSet result) {
 

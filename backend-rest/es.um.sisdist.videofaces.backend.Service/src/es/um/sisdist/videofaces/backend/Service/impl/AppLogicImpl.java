@@ -147,7 +147,10 @@ public class AppLogicImpl {
 			logger.info("Usuario presente, voy a subirlo");
 			User usuario = u.get();
 			String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-
+			Optional<Video> video1 = daoV.getVideoByFilename(usuario.getId(), filename);
+			if (video1.isPresent()){
+				return Optional.empty();
+			}
 			Optional<Video> v = daoV.storeVideo(usuario.getId(), Video.PROCESS_STATUS.PROCESSING, date, filename);
 			logger.info("Store Video en MySQL ejecutado, voy a comprobar si esta creado en base de datos: ");
 			if (v.isPresent()) {

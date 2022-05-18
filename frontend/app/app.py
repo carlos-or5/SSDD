@@ -65,7 +65,7 @@ def register():
         if request.method == "POST":
             headers = {"Content-Type": "application/json"}
             data = {"email":f"{form.email.data}", "name":f"{form.name.data}", "password":f"{form.password.data}"}
-            data = json.dumps(data)
+            data = json.dumps(data) 
             r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/register", headers=headers, data=data)
             if r.status_code != 200:
                 error = 'Email or name already registered.'
@@ -97,7 +97,7 @@ def uploadvideo():
         r = requests.post(f"http://{os.environ['BACKEND_REST']}:8080/rest/users/{username}/uploadVideo", files=files)
         respuesta = r.text
         if r.status_code != 200:
-                respuesta = 'No dejar el video en blanco. Inserta un video'
+                respuesta = 'Video en blanco o video repetido. Inserta un video nuevo.'
         return render_template('uploadvideo.html', respuesta = respuesta)
 
     else:
