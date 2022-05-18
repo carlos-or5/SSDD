@@ -24,7 +24,6 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.um.sisdist.videofaces.backend.Service.impl.AppLogicImpl;
 import es.um.sisdist.videofaces.backend.dao.models.User;
@@ -126,26 +125,25 @@ public class VideoEndpoint {
 		if (v.getPstatus() == PROCESS_STATUS.PROCESSING) {
 			return Response.noContent().build();
 		} else {
-			// Llamar a metodo SQL para devolver los videos (ID Video + Filename en JSON)
+			// Llamar a metodo SQL para devolver las faces
 			Map<String, byte[]> mapaFaces = impl.getFacesOfVideo(videoid);
 
 			// Convertimos el byte array en base64 para devolverlo en el json
 
 			Map<String, String> result = new HashMap<String, String>();
-
+			
+			// Sobreescribimos cada byte[] por su codificacion en base64
 			for (Entry<String, byte[]> element : mapaFaces.entrySet()) {
 				result.put(element.getKey(), new String(Base64.getEncoder().encode(element.getValue())));
 			}
 
-			ObjectMapper objectMapper = new ObjectMapper();
-			String stringMapa = objectMapper.writeValueAsString(result);
 			if (result.isEmpty()) {
 				Response.status(Status.FORBIDDEN).build();
 			}
 
 			return Response.ok(new Object() {
 				private VideoDTO video = VideoDTOUtils.toDTO(v);
-				private String faces = stringMapa;
+				private Map<String, String> faces = result;
 
 				@SuppressWarnings("unused")
 				public VideoDTO getVideo() {
@@ -153,7 +151,7 @@ public class VideoEndpoint {
 				}
 
 				@SuppressWarnings("unused")
-				public String getFaces() {
+				public Map<String, String> getFaces() {
 					return faces;
 				}
 			}).build();
