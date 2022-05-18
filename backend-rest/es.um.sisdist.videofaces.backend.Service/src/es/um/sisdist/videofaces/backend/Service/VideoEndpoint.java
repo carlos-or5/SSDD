@@ -84,12 +84,17 @@ public class VideoEndpoint {
 		Files.copy(fileInputStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		fileInputStream.close();
 		Optional<Video> v = impl.storeVideo(httpheaders.getHeaderString("User"), fileMetaData.getFileName());
+		
+		if (!v.isPresent()) {
+			return Response.status(Status.CONFLICT).build();
+		}
+		
 		Video video = v.get();
 
 		logger.info("El id del video subido es: " + video.getId());
 
 		return Response.accepted(new Object() {
-			private String location = "/video/" + video.getId();
+			private String location = video.getId();
 
 			@SuppressWarnings("unused")
 			public String getLocation() {
@@ -114,6 +119,7 @@ public class VideoEndpoint {
 		if (video.isPresent()) {
 			v = video.get();
 		} else {
+			logger.info("No se ha obtenido el video ");
 			return Response.status(Status.FORBIDDEN).build();
 		}
 
@@ -163,15 +169,23 @@ public class VideoEndpoint {
 				|| url.isBlank() || date.isBlank() || authToken.isBlank()) {
 			return false;
 		}
+		
+		username = username.replace("\n", "");
+		url = url.replace("\n", "");
+		date = date.replace("\n", "");
+		
 		logger.info("Username: " + username);
 		logger.info("URL: " + url);
 		logger.info("Date: " + date);
 		logger.info("AuthToken: " + authToken);
+		
+		
 
 		// Comprobamos que la fecha sea ISO8601
 		try {
 			Instant.from(DateTimeFormatter.ISO_INSTANT.parse(date));
 		} catch (DateTimeParseException e) {
+			logger.info("Fecha invalida");
 			return false;
 		}
 
@@ -181,10 +195,13 @@ public class VideoEndpoint {
 		if (user.isPresent()) {
 			userToken = user.get().getToken();
 		} else {
+			logger.info("User no encontrado");
 			return false;
 		}
 
 		String checkAuthToken = User.md5pass(url + date + userToken);
+		
+		logger.info("CheckAuthToken: " + checkAuthToken);
 
 		if (checkAuthToken.equals(authToken)) {
 			return true;
