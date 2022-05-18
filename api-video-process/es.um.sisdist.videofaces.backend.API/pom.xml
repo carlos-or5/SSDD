@@ -8,7 +8,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>${project.basedir}/tests</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -117,9 +116,16 @@
 			<version>0.0.1-SNAPSHOT</version>	
 		</dependency>
 		<dependency>
+			<groupId>es.um.sisdist.videofaces.backend.grpc</groupId>
+			<artifactId>GrpcService</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- No funciona :( 
+		<dependency>
 			<groupId>es.um.sisdist.videofaces.backend</groupId>
 			<artifactId>Service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>	
 		</dependency>
+		-->
 	</dependencies>
 </project>
