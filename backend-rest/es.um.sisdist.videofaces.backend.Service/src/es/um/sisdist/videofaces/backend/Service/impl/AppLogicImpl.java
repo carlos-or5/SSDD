@@ -219,12 +219,7 @@ public class AppLogicImpl {
 	}
 	
 	public Optional<Video> getVideoById(String videoID) {
-		Optional<Video> v = daoV.getVideoById(videoID);
-		// Si existe el usuario
-		if (v.isPresent()) {
-			v.get();
-		}
-		return Optional.empty();
+		return daoV.getVideoById(videoID);
 	}
 
 	public Map<String, byte[]> getFacesOfVideo(String videoid) {
