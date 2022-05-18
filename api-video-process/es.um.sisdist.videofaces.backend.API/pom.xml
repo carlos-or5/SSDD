@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.um.sisdist.videofaces.backend</groupId>
-	<artifactId>Service</artifactId>
+	<artifactId>API</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
@@ -114,12 +114,12 @@
 		<dependency>
 			<groupId>es.um.sisdist.videofaces.backend</groupId>
 			<artifactId>dao</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1-SNAPSHOT</version>	
 		</dependency>
 		<dependency>
-			<groupId>es.um.sisdist.videofaces.backend.grpc</groupId>
-			<artifactId>GrpcService</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>es.um.sisdist.videofaces.backend</groupId>
+			<artifactId>Service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>	
 		</dependency>
 	</dependencies>
 </project>

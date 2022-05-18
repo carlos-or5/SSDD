@@ -1,4 +1,4 @@
-package es.um.sisdist.videofaces.backend.Service;
+package es.um.sisdist.videofaces.backend.API;
 
 import java.util.Base64;
 import java.util.HashMap;
@@ -7,12 +7,6 @@ import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import es.um.sisdist.videofaces.backend.Service.impl.AppLogicImpl;
-import es.um.sisdist.videofaces.backend.dao.models.User;
-import es.um.sisdist.videofaces.backend.dao.models.Video;
-import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
-import es.um.sisdist.videofaces.models.VideoDTO;
-import es.um.sisdist.videofaces.models.VideoDTOUtils;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
