@@ -13,26 +13,16 @@ services:
       - GRPC_SERVER=videofaces-grpc
       - GRPC_SERVER_PORT=50051
 
-
   videofaces-mysql:
     build: videofaces-mysql/.
-    #ports:
-    #  - 3306
+    ports:
+      - 3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=videofaces
 
   backend-rest:
     build: backend-rest/es.um.sisdist.videofaces.backend.Service/.
-    #ports:
-    #  - 8080:8080
-    environment:
-      - SQL_SERVER=videofaces-mysql
-      - GRPC_SERVER=videofaces-grpc
-      - GRPC_SERVER_PORT=50051
-  
-  api-video-process:
-    build: api-video-process/es.um.sisdist.videofaces.backend.API/.
     ports:
       - 8080:8080
     environment:
@@ -42,11 +32,10 @@ services:
 
   videofaces-grpc:
     build: backend-grpc/es.um.sisdist.videofaces.backend.grpc.GrpcServiceImpl/.
-    #ports:
-    #  - 50051
+    ports:
+      - 50051
     environment:
       - SQL_SERVER=videofaces-mysql
       - GRPC_SERVER=videofaces-grpc
       - GRPC_SERVER_PORT=50051
-
 

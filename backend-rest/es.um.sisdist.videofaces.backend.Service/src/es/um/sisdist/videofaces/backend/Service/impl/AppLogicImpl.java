@@ -79,6 +79,11 @@ public class AppLogicImpl {
 		Optional<User> u = dao.getUserByEmail(userId);
 		return u;
 	}
+	
+	public Optional<User> getUserByName(String userName) {
+		Optional<User> u = dao.getUserByName(userName);
+		return u;
+	}
 
 	public Optional<User> getUserById(String userId) {
 		return dao.getUserById(userId);
@@ -208,6 +213,15 @@ public class AppLogicImpl {
 		}
 		return Collections.unmodifiableMap(mapVideos);
 
+	}
+	
+	public Optional<Video> getVideoById(String videoID) {
+		Optional<Video> v = daoV.getVideoById(videoID);
+		// Si existe el usuario
+		if (v.isPresent()) {
+			v.get();
+		}
+		return Optional.empty();
 	}
 
 	public Map<String, byte[]> getFacesOfVideo(String videoid) {

@@ -75,8 +75,13 @@ public class AppLogicImpl {
 		return instance;
 	}
 
-	public Optional<User> getUserByEmail(String userId) {
-		Optional<User> u = dao.getUserByEmail(userId);
+	public Optional<User> getUserByEmail(String userEmail) {
+		Optional<User> u = dao.getUserByEmail(userEmail);
+		return u;
+	}
+	
+	public Optional<User> getUserByName(String userName) {
+		Optional<User> u = dao.getUserByName(userName);
 		return u;
 	}
 

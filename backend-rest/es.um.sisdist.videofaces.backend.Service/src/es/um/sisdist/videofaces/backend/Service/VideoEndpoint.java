@@ -1,4 +1,4 @@
-package es.um.sisdist.videofaces.backend.API;
+package es.um.sisdist.videofaces.backend.Service;
 
 import java.util.Base64;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import es.um.sisdist.videofaces.backend.API.impl.AppLogicImpl;
+import es.um.sisdist.videofaces.backend.Service.impl.AppLogicImpl;
 import es.um.sisdist.videofaces.backend.dao.models.User;
 import es.um.sisdist.videofaces.backend.dao.models.Video;
 import es.um.sisdist.videofaces.backend.dao.models.Video.PROCESS_STATUS;
