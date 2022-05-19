@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
+
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
@@ -40,28 +40,12 @@ import org.json.*;
 import com.google.gson.Gson;
 
 @SuppressWarnings("deprecation")
-public class TestClient {
+public class TestClient2 {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		Client client = ClientBuilder.newClient();
 		WebTarget service = client.target(getBaseURI());
 
-		// Test de registro
-		String json = "{\"email\":\"prueba@test.com\",\"name\":\"prueba\",\"password\":\"test\"}";
-		Response registro = service.path("register").request().post(Entity.json(json));
-		int statusCode1 = registro.getStatus();
-		String username = "";
-		// Si el registro se ha efectuado corectamente
-		if (statusCode1 == 200) {
-			String outputRegistro = registro.readEntity(String.class);
-			System.out.println("El usuario registrado es: " + outputRegistro);
-			JSONObject jsonObject = new JSONObject(outputRegistro);
-			username = (String) jsonObject.get("name");
-			String r = registro.toString();
-			System.out.println("La respuesta entera del servidor es: " + r);
-			registro.close();
-		} else {
-			System.out.println("Registro invalido, nombre o email repetido.");
-		}
+		String username = "prueba";
 
 		// Test envio del video
 
