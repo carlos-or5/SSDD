@@ -51,8 +51,9 @@ fi
 
 while [ ${http_code} -eq 204 ];
 do
-  response_body=$(/usr/bin/curl -sS -w "\n%{http_code}" -H "User: ${1}" -H "Date: ${datee}" -H "Auth-Token: ${auth_token_2}" "${url_video}")
-  http_code=$(echo "${response_body}" | tail -n1)
+  response=$(/usr/bin/curl -sS -w "\n%{http_code}" -H "User: ${1}" -H "Date: ${datee}" -H "Auth-Token: ${auth_token_2}" "${url_video}")
+  response_body=$(echo "${response}" | head -n-1)
+  http_code=$(echo "${response}" | tail -n1)
   echo "Not processed yet :("
   echo "HTTP: ${http_code}"
   sleep 1
