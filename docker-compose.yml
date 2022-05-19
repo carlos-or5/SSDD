@@ -2,18 +2,19 @@ version: '2'
 services:
 
   videofaces-frontend:
-    image: dsevilla/videofaces-frontend:1.0
+    image: peterg11/ssdd:frontend
     ports:
       - 5000:5000
     environment:
       - FLASK_APP=app/app.py
       - FLASK_ENV=development
+      - BACKEND_REST=backend-rest
       - SQL_SERVER=videofaces-mysql
       - GRPC_SERVER=videofaces-grpc
       - GRPC_SERVER_PORT=50051
 
   videofaces-mysql:
-    build: videofaces-mysql/.
+    image: peterg11/ssdd:videofaces
     ports:
       - 3306
     environment:
@@ -21,7 +22,7 @@ services:
       - MYSQL_DATABASE=videofaces
 
   backend-rest:
-    image: dsevilla/videofaces-backend-rest:1.0
+    image: peterg11/ssdd:backend-rest
     ports:
       - 8080:8080
     environment:
@@ -30,7 +31,7 @@ services:
       - GRPC_SERVER_PORT=50051
 
   videofaces-grpc:
-    image: dsevilla/videofaces-backend-grpc:1.0
+    image: peterg11/ssdd:backend-grpc
     ports:
       - 50051
     environment:
